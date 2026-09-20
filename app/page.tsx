@@ -401,8 +401,32 @@ export default function Home() {
           ".finale > p",
           ".finale > h2",
           ".finale-actions",
-          ".finale > img",
         ]);
+
+        gsap.fromTo(".finale-logo",
+          {
+            autoAlpha: 0,
+            y: 58,
+            scale: 0.94,
+            filter: "blur(10px) drop-shadow(0px 0px 0px rgba(17, 6, 32, 0))",
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            filter: "blur(0px) drop-shadow(0px 8px 12px rgba(17, 6, 32, 0.28))",
+            duration: 0.86,
+            delay: 0.18,
+            ease: "power4.out",
+            clearProps: "transform,filter,opacity,visibility",
+            scrollTrigger: {
+              trigger: ".finale",
+              start: "top 84%",
+              once: true,
+              toggleActions: "play none none none",
+            },
+          },
+        );
       }
     }, root);
 
@@ -581,7 +605,7 @@ export default function Home() {
           <a href={DEX_URL} target="_blank" rel="noreferrer">VIEW THE PAIR ↗</a>
           <a href={X_URL} target="_blank" rel="noreferrer">STALK US ON X ↗</a>
         </div>
-        <img src={asset("/brand/liquidity-pair-wordmark.webp")} alt="Liquidity Pair" loading="lazy" decoding="async" />
+        <img className="finale-logo" src={asset("/brand/liquidity-pair-wordmark.webp")} alt="Liquidity Pair" loading="lazy" decoding="async" />
       </section>
     </main>
   );
