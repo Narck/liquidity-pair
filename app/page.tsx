@@ -523,7 +523,17 @@ export default function Home() {
             <div className="lab-token lab-token-met">
               <div className="lab-token-face"><strong>$MET</strong><span>THE LIQUIDITY</span></div>
             </div>
-            <div className="lab-impact" />
+            <div className="lab-impact">
+              <svg className="lab-impact-rays" viewBox="0 0 100 100" aria-hidden="true">
+                {Array.from({ length: 24 }, (_, index) => (
+                  <path
+                    key={`impact-ray-${index}`}
+                    d="M47.38 .07H52.62L51.52 21.04H48.48Z"
+                    transform={`rotate(${index * 15} 50 50)`}
+                  />
+                ))}
+              </svg>
+            </div>
             <div className="lab-result">
               <img src={asset("/brand/lp-pfp.webp")} alt="" />
             </div>

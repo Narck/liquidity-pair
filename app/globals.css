@@ -751,16 +751,20 @@ a { color: inherit; text-decoration: none; }
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: repeating-conic-gradient(
-    from -7.5deg,
-    transparent 0 4.5deg,
-    var(--sun) 4.5deg 10.5deg,
-    transparent 10.5deg 15deg
-  );
-  clip-path: circle(50% at 50% 50%);
   filter: drop-shadow(0 0 28px var(--hot));
   opacity: 0;
   will-change: transform, opacity;
+}
+
+.lab-impact-rays {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: var(--sun);
+  shape-rendering: geometricPrecision;
 }
 
 .lab-impact::after {
