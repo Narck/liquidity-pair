@@ -460,7 +460,7 @@ export default function Home() {
             </div>
             <div className="lab-impact" />
             <div className="lab-result">
-              <img src={asset("/brand/lp-mark.webp")} alt="" />
+              <img src={asset("/brand/lp-pfp.webp")} alt="" />
             </div>
           </div>
           <div className="pair-lab-result-copy lab-copy-after">
