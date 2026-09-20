@@ -1007,7 +1007,7 @@ a { color: inherit; text-decoration: none; }
   border: 4px solid var(--ink);
   border-radius: 28px;
   background: var(--cream);
-  box-shadow: 14px 18px 0 rgba(17, 6, 32, 0.72);
+  box-shadow: none;
   transform-style: preserve-3d;
   will-change: transform;
 }
