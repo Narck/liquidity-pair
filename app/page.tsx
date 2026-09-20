@@ -24,8 +24,7 @@ const gallery = [
 export default function Home() {
   const root = useRef<HTMLElement>(null);
   const intro = useRef<HTMLDivElement>(null);
-  const fullLogo = useRef<HTMLImageElement>(null);
-  const introMark = useRef<HTMLImageElement>(null);
+  const fullLogo = useRef<HTMLDivElement>(null);
   const navMark = useRef<HTMLImageElement>(null);
   const hero = useRef<HTMLElement>(null);
   const labSection = useRef<HTMLElement>(null);
@@ -39,11 +38,11 @@ export default function Home() {
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const finePointer = window.matchMedia("(pointer: fine)").matches;
       const destination = navMark.current?.getBoundingClientRect();
-      const source = introMark.current?.getBoundingClientRect();
+      const source = fullLogo.current?.getBoundingClientRect();
 
       gsap.set(navMark.current, { autoAlpha: 0 });
       gsap.set(".hero-reveal", { autoAlpha: 0, y: 28 });
-      gsap.set(introMark.current, { autoAlpha: 0, scale: 0.45, rotate: -12 });
+      gsap.set(".intro-letter", { autoAlpha: 0 });
 
       const introTimeline = gsap.timeline({
         defaults: { ease: "power3.inOut" },
@@ -64,7 +63,7 @@ export default function Home() {
       } else {
         const deltaX = destination.left + destination.width / 2 - (source.left + source.width / 2);
         const deltaY = destination.top + destination.height / 2 - (source.top + source.height / 2);
-        const endScale = destination.width / source.width;
+        const endScale = destination.width / (source.width * 0.36);
 
         introTimeline
           .fromTo(fullLogo.current,
@@ -72,13 +71,17 @@ export default function Home() {
             { autoAlpha: 1, scale: 1, rotate: 0, filter: "blur(0px) saturate(1)", duration: 0.95, ease: "back.out(1.7)" },
           )
           .fromTo(".intro-bubble", { autoAlpha: 0, scale: 0, rotate: -24 }, { autoAlpha: 1, scale: 1, rotate: 0, duration: 0.62, stagger: 0.08, ease: "back.out(2)" }, "-=0.35")
-          .to(fullLogo.current, { scaleX: 0.08, autoAlpha: 0, filter: "blur(12px)", duration: 0.44, delay: 0.35 })
-          .to(introMark.current, { autoAlpha: 1, scale: 1, rotate: 0, duration: 0.48, ease: "back.out(2)" }, "<0.04")
-          .to(introMark.current, { x: Math.round(deltaX), y: Math.round(deltaY), scale: endScale, duration: 0.85, ease: "expo.inOut" }, "+=0.2")
+          .to(".intro-wordmark-full", { autoAlpha: 0, filter: "blur(10px)", duration: 0.46, delay: 0.35, ease: "power2.inOut" })
+          .to(".intro-letter", { autoAlpha: 1, duration: 0.46, ease: "none" }, "<")
+          .addLabel("lettersMerge", "+=0.08")
+          .to(".intro-letter-l", { xPercent: 32, yPercent: -7, rotate: -4, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
+          .to(".intro-letter-p", { xPercent: -8, yPercent: 7, rotate: 4, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
+          .to(fullLogo.current, { x: Math.round(deltaX), y: Math.round(deltaY), scale: endScale, duration: 0.88, ease: "expo.inOut" }, "+=0.42")
           .addLabel("handoff", "-=0.34")
           .to([".intro-cover", ".intro-wash", ".intro-bubble"], { autoAlpha: 0, duration: 0.42 }, "handoff")
           .to(intro.current, { backgroundColor: "rgba(125, 53, 255, 0)", duration: 0.42 }, "handoff")
           .to(".hero-reveal", { autoAlpha: 1, y: 0, duration: 0.62, stagger: 0.08, ease: "back.out(1.5)" }, "handoff+=0.06")
+          .to(fullLogo.current, { autoAlpha: 0, duration: 0.14, ease: "none" }, "handoff+=0.38")
           .set(navMark.current, { autoAlpha: 1 }, "handoff+=0.42")
           .set(intro.current, { display: "none" }, "<");
       }
@@ -411,8 +414,12 @@ export default function Home() {
         <div className="intro-wash" />
         <span className="intro-bubble bubble-one">HOT<br />PAIR!</span>
         <span className="intro-bubble bubble-two">LP × MET</span>
-        <img ref={fullLogo} className="intro-wordmark" src={asset("/brand/liquidity-pair-wordmark.webp")} alt="Liquidity Pair" fetchPriority="high" />
-        <img ref={introMark} className="intro-mark" src={asset("/brand/lp-mark.webp")} alt="" />
+        <div ref={fullLogo} className="intro-wordmark" role="img" aria-label="Liquidity Pair">
+          <img className="intro-wordmark-full" src={asset("/brand/liquidity-pair-wordmark.webp")} alt="" fetchPriority="high" />
+          <i className="intro-letter intro-letter-l intro-letter-l-stem" style={{ backgroundImage: `url(${asset("/brand/liquidity-pair-wordmark.webp")})` }} aria-hidden="true" />
+          <i className="intro-letter intro-letter-l intro-letter-l-arm" style={{ backgroundImage: `url(${asset("/brand/liquidity-pair-wordmark.webp")})` }} aria-hidden="true" />
+          <i className="intro-letter intro-letter-p intro-letter-p-top" style={{ backgroundImage: `url(${asset("/brand/liquidity-pair-wordmark.webp")})` }} aria-hidden="true" />
+        </div>
       </div>
 
       <header className="site-header">
