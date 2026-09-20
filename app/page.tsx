@@ -284,6 +284,41 @@ export default function Home() {
 
         let furthestLabProgress = 0;
         let labProgressTween: gsap.core.Tween | null = null;
+        let labCollapseTween: gsap.core.Tween | null = null;
+        let labDidCollapse = false;
+        let previousScrollBehavior: string | null = null;
+
+        const collapseLabScrollSpace = () => {
+          const section = labSection.current;
+          if (!section || !labStage || labDidCollapse) return;
+
+          labDidCollapse = true;
+          const sectionTop = section.offsetTop;
+          const finalHeight = labStage.offsetHeight;
+          previousScrollBehavior = document.documentElement.style.scrollBehavior;
+          document.documentElement.style.scrollBehavior = "auto";
+          gsap.set(section, { height: section.offsetHeight });
+          labCollapseTween = gsap.to(section, {
+            height: finalHeight,
+            duration: 0.48,
+            ease: "power3.inOut",
+            overwrite: true,
+            onUpdate: () => {
+              const remainingScrollSpace = Math.max(0, section.offsetHeight - window.innerHeight);
+              window.scrollTo(0, sectionTop + remainingScrollSpace);
+            },
+            onComplete: () => {
+              section.classList.add("is-complete");
+              gsap.set(section, { clearProps: "height" });
+              window.scrollTo(0, sectionTop);
+              ScrollTrigger.refresh();
+              window.scrollTo(0, sectionTop);
+              document.documentElement.style.scrollBehavior = previousScrollBehavior ?? "";
+              previousScrollBehavior = null;
+            },
+          });
+        };
+
         const labScrollTrigger = ScrollTrigger.create({
           trigger: labSection.current,
           start: "top top",
@@ -300,13 +335,22 @@ export default function Home() {
               overwrite: true,
             });
 
-            if (furthestLabProgress >= 0.999) self.disable(false);
+            if (furthestLabProgress >= 0.999) {
+              self.disable(false);
+              collapseLabScrollSpace();
+            }
           },
         });
 
         cleanups.push(() => {
           labProgressTween?.kill();
+          labCollapseTween?.kill();
           labScrollTrigger.kill();
+          labSection.current?.classList.remove("is-complete");
+          labSection.current?.style.removeProperty("height");
+          if (previousScrollBehavior !== null) {
+            document.documentElement.style.scrollBehavior = previousScrollBehavior;
+          }
         });
 
         if (finePointer && labStage && labField) {
