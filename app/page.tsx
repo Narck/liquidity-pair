@@ -25,7 +25,7 @@ export default function Home() {
   const root = useRef<HTMLElement>(null);
   const intro = useRef<HTMLDivElement>(null);
   const fullLogo = useRef<HTMLDivElement>(null);
-  const navMark = useRef<HTMLImageElement>(null);
+  const navMark = useRef<HTMLDivElement>(null);
   const hero = useRef<HTMLElement>(null);
   const labSection = useRef<HTMLElement>(null);
   const gallerySection = useRef<HTMLElement>(null);
@@ -61,9 +61,11 @@ export default function Home() {
           .set(navMark.current, { autoAlpha: 1 }, "reducedHandoff+=0.18")
           .set(intro.current, { display: "none" }, "<");
       } else {
-        const deltaX = destination.left + destination.width / 2 - (source.left + source.width / 2);
-        const deltaY = destination.top + destination.height / 2 - (source.top + source.height / 2);
-        const endScale = destination.width / (source.width * 0.36);
+        const mergedCenterX = source.left + source.width * (872 / 1800);
+        const mergedCenterY = source.top + source.height * (336 / 601);
+        const deltaX = destination.left + destination.width / 2 - mergedCenterX;
+        const deltaY = destination.top + destination.height / 2 - mergedCenterY;
+        const endScale = destination.height / (source.height * (694 / 601));
 
         introTimeline
           .fromTo(fullLogo.current,
@@ -74,8 +76,9 @@ export default function Home() {
           .to(".intro-wordmark-full", { autoAlpha: 0, filter: "blur(10px)", duration: 0.46, delay: 0.35, ease: "power2.inOut" })
           .to(".intro-letter", { autoAlpha: 1, duration: 0.46, ease: "none" }, "<")
           .addLabel("lettersMerge", "+=0.08")
-          .to(".intro-letter-l", { xPercent: 32, yPercent: -7, rotate: -4, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
-          .to(".intro-letter-p", { xPercent: -8, yPercent: 7, rotate: 4, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
+          .to(".intro-letter-l", { xPercent: 31, yPercent: -5, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
+          .to(".intro-letter-l-arm", { scaleY: 1.24, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
+          .to(".intro-letter-p", { xPercent: -12, yPercent: 20, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
           .to(fullLogo.current, { x: Math.round(deltaX), y: Math.round(deltaY), scale: endScale, duration: 0.88, ease: "expo.inOut" }, "+=0.42")
           .addLabel("handoff", "-=0.34")
           .to([".intro-cover", ".intro-wash", ".intro-bubble"], { autoAlpha: 0, duration: 0.42 }, "handoff")
@@ -416,15 +419,23 @@ export default function Home() {
         <span className="intro-bubble bubble-two">LP × MET</span>
         <div ref={fullLogo} className="intro-wordmark" role="img" aria-label="Liquidity Pair">
           <img className="intro-wordmark-full" src={asset("/brand/liquidity-pair-wordmark.webp")} alt="" fetchPriority="high" />
-          <i className="intro-letter intro-letter-l intro-letter-l-stem" style={{ backgroundImage: `url(${asset("/brand/liquidity-pair-wordmark.webp")})` }} aria-hidden="true" />
-          <i className="intro-letter intro-letter-l intro-letter-l-arm" style={{ backgroundImage: `url(${asset("/brand/liquidity-pair-wordmark.webp")})` }} aria-hidden="true" />
-          <i className="intro-letter intro-letter-p intro-letter-p-top" style={{ backgroundImage: `url(${asset("/brand/liquidity-pair-wordmark.webp")})` }} aria-hidden="true" />
+          <img className="intro-letter intro-letter-l intro-letter-l-stem" src={asset("/brand/wordmark-l-stem.webp")} alt="" fetchPriority="high" />
+          <img className="intro-letter intro-letter-l intro-letter-l-arm" src={asset("/brand/wordmark-l-arm.webp")} alt="" fetchPriority="high" />
+          <img className="intro-letter intro-letter-p" src={asset("/brand/wordmark-p-loop.webp")} alt="" fetchPriority="high" />
+          <img className="intro-letter intro-letter-p" src={asset("/brand/wordmark-p-stem.webp")} alt="" fetchPriority="high" />
         </div>
       </div>
 
       <header className="site-header">
         <a className="brand-link" href="#top" aria-label="Liquidity Pair home">
-          <img ref={navMark} src={asset("/brand/lp-mark.webp")} alt="" />
+          <div ref={navMark} className="brand-monogram" aria-hidden="true">
+            <div className="brand-monogram-canvas">
+              <img className="brand-letter brand-letter-l" src={asset("/brand/wordmark-l-stem.webp")} alt="" />
+              <img className="brand-letter brand-letter-l brand-letter-l-arm" src={asset("/brand/wordmark-l-arm.webp")} alt="" />
+              <img className="brand-letter brand-letter-p" src={asset("/brand/wordmark-p-loop.webp")} alt="" />
+              <img className="brand-letter brand-letter-p" src={asset("/brand/wordmark-p-stem.webp")} alt="" />
+            </div>
+          </div>
         </a>
         <nav aria-label="Primary navigation">
           <a href="#about">THE LORE</a>

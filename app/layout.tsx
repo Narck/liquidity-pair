@@ -12,8 +12,8 @@ export const metadata: Metadata = {
   title: "Liquidity Pair — LP / MET",
   description: "Liquidity Pair: one of the first Ember deploys, paired with Meteora's MET token on Solana.",
   icons: {
-    icon: `${basePath}/brand/lp-mark.webp`,
-    shortcut: `${basePath}/brand/lp-mark.webp`,
+    icon: `${basePath}/brand/lp-pfp.webp`,
+    shortcut: `${basePath}/brand/lp-pfp.webp`,
   },
 };
 
