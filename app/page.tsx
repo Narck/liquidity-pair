@@ -267,11 +267,11 @@ export default function Home() {
   return (
     <main ref={root} className="site-shell">
       <div ref={intro} className="intro" aria-label="Liquidity Pair intro">
-        <img className="intro-cover" src={asset("/brand/lp-hero.webp")} alt="" />
+        <img className="intro-cover" src={asset("/brand/lp-hero.webp")} alt="" fetchPriority="high" />
         <div className="intro-wash" />
         <span className="intro-bubble bubble-one">HOT<br />PAIR!</span>
         <span className="intro-bubble bubble-two">LP × MET</span>
-        <img ref={fullLogo} className="intro-wordmark" src={asset("/brand/liquidity-pair-wordmark.webp")} alt="Liquidity Pair" />
+        <img ref={fullLogo} className="intro-wordmark" src={asset("/brand/liquidity-pair-wordmark.webp")} alt="Liquidity Pair" fetchPriority="high" />
         <img ref={introMark} className="intro-mark" src={asset("/brand/lp-mark.webp")} alt="" />
       </div>
 
