@@ -16,6 +16,27 @@ html {
   background: var(--ink);
   color: var(--cream);
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+}
+
+::-webkit-scrollbar { width: 13px; height: 13px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb {
+  min-height: 64px;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #14f195 0%, var(--aqua) 24%, #9945ff 52%, var(--hot) 74%, var(--orange) 100%);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #55ffc0 0%, #55fff5 24%, #b274ff 52%, #ff66bd 74%, #ff8a50 100%);
+}
+::-webkit-scrollbar-corner { background: var(--ink); }
+
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--aqua) var(--ink);
+  }
 }
 
 body {

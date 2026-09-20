@@ -250,7 +250,6 @@ export default function Home() {
         const labStage = labSection.current?.querySelector<HTMLElement>(".pair-lab-stage");
         const labField = labSection.current?.querySelector<HTMLElement>(".pair-lab-field");
         const labTokens = gsap.utils.toArray<HTMLElement>(".lab-token");
-        const labFadeDuration = window.innerWidth <= 600 ? 0.28 : 0.5;
 
         gsap.set(".lab-result", { autoAlpha: 0, scale: 0.35, rotate: -16 });
         gsap.set(".lab-impact", { autoAlpha: 0, scale: 0.25 });
@@ -281,7 +280,7 @@ export default function Home() {
           )
           .to(".lab-impact", { autoAlpha: 0.28, scale: 1.45, duration: 0.65, ease: "power2.out" }, 2.22)
           .fromTo(".lab-copy-after", { autoAlpha: 0, y: 34 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "back.out(1.5)" }, 2.24)
-          .to(".pair-lab-stage", { "--lab-fade": "100%", duration: labFadeDuration, ease: "none" }, 2.4);
+          .to(".pair-lab-stage", { "--lab-fade": "100%", duration: 0.34, ease: "none" }, 2.4);
 
         let furthestLabProgress = 0;
         let labProgressTween: gsap.core.Tween | null = null;
