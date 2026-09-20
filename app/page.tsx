@@ -461,10 +461,29 @@ export default function Home() {
         const galleryDeck = root.current?.querySelector<HTMLElement>(".gallery-deck");
         if (finePointer && galleryDeck) {
           let activeSurface: HTMLElement | null = null;
+          let entryPoint: { x: number; y: number } | null = null;
+          let lastPointerPosition: { x: number; y: number } | null = null;
+          const cardSurfaces = cards.map((card) => card.querySelector<HTMLElement>(".gallery-card-tilt"));
+
+          const syncInteractiveCard = () => {
+            const visibleCard = cards.reduce<{ card: HTMLElement | null; opacity: number }>((active, card) => {
+              const opacity = Number(gsap.getProperty(card, "opacity")) || 0;
+              return opacity > active.opacity ? { card, opacity } : active;
+            }, { card: null, opacity: -1 });
+            const visibleSurface = visibleCard.card?.querySelector<HTMLElement>(".gallery-card-tilt") ?? null;
+            cardSurfaces.forEach((surface) => {
+              if (surface) surface.style.pointerEvents = surface === visibleSurface ? "auto" : "none";
+            });
+          };
+
+          syncInteractiveCard();
+          galleryTimeline.eventCallback("onUpdate", syncInteractiveCard);
 
           const resetSurface = (surface: HTMLElement) => {
             const light = surface.querySelector<HTMLElement>(".gallery-card-light");
             gsap.to(surface, {
+              x: 0,
+              y: 0,
               rotationX: 0,
               rotationY: 0,
               scale: 1,
@@ -487,42 +506,99 @@ export default function Home() {
             const surface = visibleCard.card.querySelector<HTMLElement>(".gallery-card-tilt");
             if (!surface) return;
 
-            if (activeSurface && activeSurface !== surface) resetSurface(activeSurface);
+            const pointerIsOnCard = event.target instanceof Node && surface.contains(event.target);
+
+            if (!pointerIsOnCard) {
+              resetCard();
+              lastPointerPosition = { x: event.clientX, y: event.clientY };
+              return;
+            }
+
+            if (activeSurface && activeSurface !== surface) {
+              resetSurface(activeSurface);
+              entryPoint = null;
+            }
             activeSurface = surface;
 
+            if (!entryPoint) {
+              let edgeX = event.clientX;
+              let edgeY = event.clientY;
+
+              if (lastPointerPosition) {
+                const previousTarget = document.elementFromPoint(lastPointerPosition.x, lastPointerPosition.y);
+                const previousPointWasInside = previousTarget !== null && surface.contains(previousTarget);
+
+                if (!previousPointWasInside) {
+                  let outsideX = lastPointerPosition.x;
+                  let outsideY = lastPointerPosition.y;
+                  let insideX = event.clientX;
+                  let insideY = event.clientY;
+
+                  for (let step = 0; step < 9; step += 1) {
+                    const midpointX = (outsideX + insideX) / 2;
+                    const midpointY = (outsideY + insideY) / 2;
+                    const midpointTarget = document.elementFromPoint(midpointX, midpointY);
+                    if (midpointTarget !== null && surface.contains(midpointTarget)) {
+                      insideX = midpointX;
+                      insideY = midpointY;
+                    } else {
+                      outsideX = midpointX;
+                      outsideY = midpointY;
+                    }
+                  }
+
+                  edgeX = insideX;
+                  edgeY = insideY;
+                }
+              }
+
+              entryPoint = { x: edgeX, y: edgeY };
+            }
+
             const bounds = galleryDeck.getBoundingClientRect();
-            const x = gsap.utils.clamp(-1, 1, ((event.clientX - bounds.left) / bounds.width) * 2 - 1);
-            const y = gsap.utils.clamp(-1, 1, ((event.clientY - bounds.top) / bounds.height) * 2 - 1);
+            const baseX = gsap.utils.clamp(-1, 1, ((event.clientX - bounds.left) / bounds.width) * 2 - 1);
+            const baseY = gsap.utils.clamp(-1, 1, ((event.clientY - bounds.top) / bounds.height) * 2 - 1);
+            const distanceFromEntry = Math.hypot(event.clientX - entryPoint.x, event.clientY - entryPoint.y);
+            const influence = gsap.utils.clamp(0, 1, distanceFromEntry / 32);
+            const x = baseX * influence;
+            const y = baseY * influence;
             const pull = Math.min(1, Math.hypot(x, y));
             const light = surface.querySelector<HTMLElement>(".gallery-card-light");
 
-            surface.style.setProperty("--light-x", `${(1 - x) * 50}%`);
-            surface.style.setProperty("--light-y", `${(1 - y) * 50}%`);
+            surface.style.setProperty("--light-x", `${(1 - baseX) * 50}%`);
+            surface.style.setProperty("--light-y", `${(1 - baseY) * 50}%`);
             gsap.to(surface, {
-              rotationX: -y * 7,
-              rotationY: x * 9,
-              scale: 1.018,
+              x: x * 6,
+              y: y * 6,
+              rotationX: -y * 5.5,
+              rotationY: x * 7,
+              scale: 1.012,
               transformPerspective: 950,
               transformOrigin: "center center",
               "--card-contrast": (1 + pull * 0.16).toFixed(3),
               "--card-saturation": (1 + pull * 0.08).toFixed(3),
-              duration: 0.42,
-              ease: "power3.out",
+              duration: 0.18,
+              ease: "power2.out",
               overwrite: "auto",
             });
-            if (light) gsap.to(light, { autoAlpha: 0.78, duration: 0.28, ease: "power2.out", overwrite: "auto" });
+            if (light) gsap.to(light, { autoAlpha: 0.78, duration: 0.18, ease: "power2.out", overwrite: "auto" });
+            lastPointerPosition = { x: event.clientX, y: event.clientY };
           };
 
           const resetCard = () => {
             if (activeSurface) resetSurface(activeSurface);
             activeSurface = null;
+            entryPoint = null;
+            lastPointerPosition = null;
           };
 
-          galleryDeck.addEventListener("pointermove", moveCard, { passive: true });
-          galleryDeck.addEventListener("pointerleave", resetCard);
+          window.addEventListener("pointermove", moveCard, { passive: true });
+          window.addEventListener("blur", resetCard);
           cleanups.push(() => {
-            galleryDeck.removeEventListener("pointermove", moveCard);
-            galleryDeck.removeEventListener("pointerleave", resetCard);
+            window.removeEventListener("pointermove", moveCard);
+            window.removeEventListener("blur", resetCard);
+            galleryTimeline.eventCallback("onUpdate", null);
+            cardSurfaces.forEach((surface) => surface?.style.removeProperty("pointer-events"));
           });
         }
 
