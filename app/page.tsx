@@ -348,6 +348,53 @@ export default function Home() {
           ease: "none",
           scrollTrigger: { trigger: gallerySection.current, start: "top top", end: "bottom bottom", scrub: true },
         });
+
+        const revealOnce = (trigger: string, selectors: string[]) => {
+          const elements = selectors.flatMap((selector) => gsap.utils.toArray<HTMLElement>(selector));
+          if (!elements.length) return;
+
+          gsap.fromTo(elements,
+            {
+              autoAlpha: 0,
+              y: 72,
+              filter: "blur(10px)",
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              filter: "blur(0px)",
+              duration: 0.64,
+              stagger: 0.075,
+              ease: "power4.out",
+              clearProps: "filter",
+              scrollTrigger: {
+                trigger,
+                start: "top 84%",
+                once: true,
+                toggleActions: "play none none none",
+              },
+            },
+          );
+        };
+
+        revealOnce(".about-grid", [
+          ".about-label",
+          ".about-copy .eyebrow",
+          ".about-copy h2",
+          ".about-note",
+          ".about-badges span",
+        ]);
+        revealOnce(".gallery-scroll", [
+          ".gallery-heading p",
+          ".gallery-heading h2",
+          ".gallery-instruction",
+        ]);
+        revealOnce(".finale", [
+          ".finale > p",
+          ".finale > h2",
+          ".finale-actions",
+          ".finale > img",
+        ]);
       }
     }, root);
 
