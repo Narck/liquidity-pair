@@ -102,21 +102,26 @@ export default function Home() {
         gsap.to(".spin-sticker", { rotate: 360, duration: 18, repeat: -1, ease: "none" });
 
         if (hero.current) {
-          const floatScale = window.innerWidth <= 600 ? 0.58 : 1;
+          const floatScale = window.innerWidth <= 600 ? 0.68 : 1;
+          const randomSignedOffset = (maximum: number, minimumRatio = 0.55) => {
+            const magnitude = gsap.utils.random(maximum * minimumRatio, maximum, 0.1);
+            return Math.random() < 0.5 ? -magnitude : magnitude;
+          };
           const heroFloaters = [
-            { element: hero.current.querySelector<HTMLElement>(".hero-space-far"), x: 4, y: 3, minDuration: 10, maxDuration: 14 },
-            { element: hero.current.querySelector<HTMLElement>(".hero-space-near"), x: 7, y: 5, minDuration: 9, maxDuration: 13 },
-            { element: hero.current.querySelector<HTMLElement>(".hero-sticker"), x: 6, y: 7, minDuration: 7.5, maxDuration: 11 },
-            { element: hero.current.querySelector<HTMLElement>(".hero-ticket"), x: 7, y: 6, minDuration: 8, maxDuration: 12 },
-            { element: hero.current.querySelector<HTMLElement>(".hero-cta"), x: 5, y: 7, minDuration: 8.5, maxDuration: 12.5 },
-            { element: hero.current.querySelector<HTMLElement>(".contract-pill"), x: 5, y: 4, minDuration: 9, maxDuration: 13 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-space-far"), x: 4, y: 3, rotation: 0, minDuration: 10, maxDuration: 14 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-space-near"), x: 7, y: 5, rotation: 0, minDuration: 9, maxDuration: 13 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-sticker"), x: 14, y: 16, rotation: 1.2, minDuration: 6.4, maxDuration: 8.4 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-ticket"), x: 16, y: 13, rotation: 1.1, minDuration: 6.8, maxDuration: 9 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-cta"), x: 12, y: 15, rotation: 1.5, minDuration: 6.2, maxDuration: 8.2 },
+            { element: hero.current.querySelector<HTMLElement>(".contract-pill"), x: 10, y: 8, rotation: 0.8, minDuration: 7, maxDuration: 9.5 },
           ];
 
-          heroFloaters.forEach(({ element, x, y, minDuration, maxDuration }, index) => {
+          heroFloaters.forEach(({ element, x, y, rotation, minDuration, maxDuration }, index) => {
             if (!element) return;
             gsap.to(element, {
-              "--float-x": () => `${gsap.utils.random(-x * floatScale, x * floatScale, 0.1)}px`,
-              "--float-y": () => `${gsap.utils.random(-y * floatScale, y * floatScale, 0.1)}px`,
+              "--float-x": () => `${randomSignedOffset(x * floatScale)}px`,
+              "--float-y": () => `${randomSignedOffset(y * floatScale)}px`,
+              "--float-rotation": () => `${randomSignedOffset(rotation * floatScale, 0.45)}deg`,
               duration: gsap.utils.random(minDuration, maxDuration, 0.1),
               delay: index * 0.24,
               ease: "sine.inOut",

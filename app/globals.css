@@ -283,6 +283,7 @@ a { color: inherit; text-decoration: none; }
 .hero-space-layer {
   --float-x: 0px;
   --float-y: 0px;
+  --float-rotation: 0deg;
   position: absolute;
   z-index: -1;
   inset: -4%;
@@ -369,12 +370,14 @@ a { color: inherit; text-decoration: none; }
 .scroll-cue {
   --float-x: 0px;
   --float-y: 0px;
+  --float-rotation: 0deg;
   position: absolute;
   z-index: 3;
   translate:
     calc(var(--parallax-x, 0px) + var(--float-x))
     calc(var(--parallax-y, 0px) + var(--float-y));
-  will-change: translate;
+  rotate: var(--float-rotation);
+  will-change: translate, rotate;
 }
 
 .hero-sticker {
