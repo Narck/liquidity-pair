@@ -281,11 +281,15 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero-space-layer {
+  --float-x: 0px;
+  --float-y: 0px;
   position: absolute;
   z-index: -1;
   inset: -4%;
   pointer-events: none;
-  translate: var(--parallax-x, 0px) var(--parallax-y, 0px);
+  translate:
+    calc(var(--parallax-x, 0px) + var(--float-x))
+    calc(var(--parallax-y, 0px) + var(--float-y));
   will-change: translate;
 }
 
@@ -363,9 +367,14 @@ a { color: inherit; text-decoration: none; }
 .hero-cta,
 .contract-pill,
 .scroll-cue {
+  --float-x: 0px;
+  --float-y: 0px;
   position: absolute;
   z-index: 3;
-  translate: var(--parallax-x, 0px) var(--parallax-y, 0px);
+  translate:
+    calc(var(--parallax-x, 0px) + var(--float-x))
+    calc(var(--parallax-y, 0px) + var(--float-y));
+  will-change: translate;
 }
 
 .hero-sticker {

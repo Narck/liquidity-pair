@@ -101,6 +101,32 @@ export default function Home() {
 
         gsap.to(".spin-sticker", { rotate: 360, duration: 18, repeat: -1, ease: "none" });
 
+        if (hero.current) {
+          const floatScale = window.innerWidth <= 600 ? 0.58 : 1;
+          const heroFloaters = [
+            { element: hero.current.querySelector<HTMLElement>(".hero-space-far"), x: 4, y: 3, minDuration: 10, maxDuration: 14 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-space-near"), x: 7, y: 5, minDuration: 9, maxDuration: 13 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-sticker"), x: 6, y: 7, minDuration: 7.5, maxDuration: 11 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-ticket"), x: 7, y: 6, minDuration: 8, maxDuration: 12 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-cta"), x: 5, y: 7, minDuration: 8.5, maxDuration: 12.5 },
+            { element: hero.current.querySelector<HTMLElement>(".contract-pill"), x: 5, y: 4, minDuration: 9, maxDuration: 13 },
+          ];
+
+          heroFloaters.forEach(({ element, x, y, minDuration, maxDuration }, index) => {
+            if (!element) return;
+            gsap.to(element, {
+              "--float-x": () => `${gsap.utils.random(-x * floatScale, x * floatScale, 0.1)}px`,
+              "--float-y": () => `${gsap.utils.random(-y * floatScale, y * floatScale, 0.1)}px`,
+              duration: gsap.utils.random(minDuration, maxDuration, 0.1),
+              delay: index * 0.24,
+              ease: "sine.inOut",
+              repeat: -1,
+              yoyo: true,
+              repeatRefresh: true,
+            });
+          });
+        }
+
         if (finePointer && hero.current) {
           const heroLayers = [
             { element: hero.current.querySelector<HTMLElement>(".hero-space-far"), x: -5, y: -4 },
