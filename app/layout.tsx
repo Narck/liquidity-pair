@@ -23,7 +23,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="is-intro-locked">
+    <html lang="en" className="is-intro-locked" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(() => { const root = document.documentElement; if ("scrollRestoration" in history) history.scrollRestoration = "manual"; const reset = () => scrollTo(0, 0); const measure = () => { if (!document.querySelector(".site-shell")) return false; root.classList.remove("is-intro-locked"); root.style.setProperty("--intro-scrollbar-width", (innerWidth - root.clientWidth) + "px"); root.classList.add("is-intro-locked"); reset(); return true; }; const observer = new MutationObserver(() => { if (measure()) observer.disconnect(); }); observer.observe(root, { childList: true, subtree: true }); if (measure()) observer.disconnect(); reset(); addEventListener("pageshow", reset); })();`,
+          }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

@@ -39,6 +39,19 @@ export default function Home() {
     const pageRoot = document.documentElement;
     const previousScrollRestoration = window.history.scrollRestoration;
     let scrollLocked = true;
+    let scrollLockFrame = 0;
+    const blockedScrollKeys = new Set(["ArrowDown", "ArrowUp", "End", "Home", "PageDown", "PageUp", " "]);
+
+    const blockScrollInput = (event: Event) => event.preventDefault();
+    const blockScrollKey = (event: KeyboardEvent) => {
+      if (blockedScrollKeys.has(event.key)) event.preventDefault();
+    };
+
+    const removeScrollInputBlockers = () => {
+      window.removeEventListener("wheel", blockScrollInput);
+      window.removeEventListener("touchmove", blockScrollInput);
+      window.removeEventListener("keydown", blockScrollKey);
+    };
 
     const scrollToInitialState = () => {
       const previousScrollBehavior = pageRoot.style.scrollBehavior;
@@ -50,14 +63,30 @@ export default function Home() {
     const unlockPageScroll = () => {
       if (!scrollLocked) return;
       scrollLocked = false;
+      cancelAnimationFrame(scrollLockFrame);
+      removeScrollInputBlockers();
       scrollToInitialState();
       pageRoot.classList.remove("is-intro-locked");
       ScrollTrigger.refresh();
     };
 
+    const holdInitialScroll = () => {
+      if (!scrollLocked) return;
+      if (window.scrollX !== 0 || window.scrollY !== 0) scrollToInitialState();
+      scrollLockFrame = requestAnimationFrame(holdInitialScroll);
+    };
+
     window.history.scrollRestoration = "manual";
+    if (!pageRoot.style.getPropertyValue("--intro-scrollbar-width")) {
+      pageRoot.classList.remove("is-intro-locked");
+      pageRoot.style.setProperty("--intro-scrollbar-width", `${window.innerWidth - pageRoot.clientWidth}px`);
+    }
     pageRoot.classList.add("is-intro-locked");
     scrollToInitialState();
+    holdInitialScroll();
+    window.addEventListener("wheel", blockScrollInput, { passive: false });
+    window.addEventListener("touchmove", blockScrollInput, { passive: false });
+    window.addEventListener("keydown", blockScrollKey);
     window.addEventListener("beforeunload", scrollToInitialState);
     window.addEventListener("pagehide", scrollToInitialState);
 
@@ -687,6 +716,8 @@ export default function Home() {
       context.revert();
       window.removeEventListener("beforeunload", scrollToInitialState);
       window.removeEventListener("pagehide", scrollToInitialState);
+      removeScrollInputBlockers();
+      cancelAnimationFrame(scrollLockFrame);
       pageRoot.classList.remove("is-intro-locked");
       window.history.scrollRestoration = previousScrollRestoration;
     };
