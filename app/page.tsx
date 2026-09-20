@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -30,6 +30,8 @@ export default function Home() {
   const hero = useRef<HTMLElement>(null);
   const labSection = useRef<HTMLElement>(null);
   const gallerySection = useRef<HTMLElement>(null);
+  const copyResetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [contractCopied, setContractCopied] = useState(false);
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -101,36 +103,89 @@ export default function Home() {
 
         gsap.to(".spin-sticker", { rotate: 360, duration: 18, repeat: -1, ease: "none" });
 
+        const heroMotionStates = new Map<HTMLElement, {
+          floatX: number;
+          floatY: number;
+          floatRotation: number;
+          parallaxX: number;
+          parallaxY: number;
+        }>();
+        const getHeroMotionState = (element: HTMLElement) => {
+          let state = heroMotionStates.get(element);
+          if (!state) {
+            state = { floatX: 0, floatY: 0, floatRotation: 0, parallaxX: 0, parallaxY: 0 };
+            heroMotionStates.set(element, state);
+          }
+          return state;
+        };
+        const applyHeroMotion = (element: HTMLElement) => {
+          const state = getHeroMotionState(element);
+          element.style.translate = `${state.floatX + state.parallaxX}px ${state.floatY + state.parallaxY}px`;
+          element.style.rotate = `${state.floatRotation}deg`;
+        };
+
         if (hero.current) {
-          const floatScale = window.innerWidth <= 600 ? 0.68 : 1;
-          const randomSignedOffset = (maximum: number, minimumRatio = 0.55) => {
-            const magnitude = gsap.utils.random(maximum * minimumRatio, maximum, 0.1);
-            return Math.random() < 0.5 ? -magnitude : magnitude;
-          };
+          const floatScale = window.innerWidth <= 600 ? 0.65 : 1;
           const heroFloaters = [
-            { element: hero.current.querySelector<HTMLElement>(".hero-space-far"), x: 4, y: 3, rotation: 0, minDuration: 10, maxDuration: 14 },
-            { element: hero.current.querySelector<HTMLElement>(".hero-space-near"), x: 7, y: 5, rotation: 0, minDuration: 9, maxDuration: 13 },
-            { element: hero.current.querySelector<HTMLElement>(".hero-sticker"), x: 14, y: 16, rotation: 1.2, minDuration: 6.4, maxDuration: 8.4 },
-            { element: hero.current.querySelector<HTMLElement>(".hero-ticket"), x: 16, y: 13, rotation: 1.1, minDuration: 6.8, maxDuration: 9 },
-            { element: hero.current.querySelector<HTMLElement>(".hero-cta"), x: 12, y: 15, rotation: 1.5, minDuration: 6.2, maxDuration: 8.2 },
-            { element: hero.current.querySelector<HTMLElement>(".contract-pill"), x: 10, y: 8, rotation: 0.8, minDuration: 7, maxDuration: 9.5 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-space-far"), x: 8, y: 6, rotation: 0, minDuration: 11, maxDuration: 15 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-space-near"), x: 14, y: 10, rotation: 0, minDuration: 10, maxDuration: 14 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-sticker"), x: 42, y: 34, rotation: 3.2, minDuration: 8.8, maxDuration: 11.8 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-ticket"), x: 46, y: 38, rotation: 3, minDuration: 9.2, maxDuration: 12.5 },
+            { element: hero.current.querySelector<HTMLElement>(".hero-cta"), x: 36, y: 42, rotation: 3.6, minDuration: 8.5, maxDuration: 11.5 },
           ];
+          const driftStops: Array<() => void> = [];
+          let driftActive = true;
+
+          const pickDistantTarget = (current: number, maximum: number) => {
+            if (maximum === 0) return 0;
+            for (let attempt = 0; attempt < 8; attempt += 1) {
+              const candidate = gsap.utils.random(-maximum, maximum, 0.1);
+              if (Math.abs(candidate - current) >= maximum * 0.62) return candidate;
+            }
+            return current >= 0 ? -maximum : maximum;
+          };
 
           heroFloaters.forEach(({ element, x, y, rotation, minDuration, maxDuration }, index) => {
             if (!element) return;
-            gsap.to(element, {
-              "--float-x": () => `${randomSignedOffset(x * floatScale)}px`,
-              "--float-y": () => `${randomSignedOffset(y * floatScale)}px`,
-              "--float-rotation": () => `${randomSignedOffset(rotation * floatScale, 0.45)}deg`,
-              duration: gsap.utils.random(minDuration, maxDuration, 0.1),
-              delay: index * 0.24,
-              ease: "sine.inOut",
-              repeat: -1,
-              yoyo: true,
-              repeatRefresh: true,
-            });
+            const rangeX = x * floatScale;
+            const rangeY = y * floatScale;
+            const rotationRange = rotation * floatScale;
+            const state = getHeroMotionState(element);
+            let activeTween: gsap.core.Tween | null = null;
+
+            const driftToNextPoint = (delay = 0) => {
+              if (!driftActive) return;
+              const nextX = pickDistantTarget(state.floatX, rangeX);
+              const nextY = pickDistantTarget(state.floatY, rangeY);
+              const nextRotation = pickDistantTarget(state.floatRotation, rotationRange);
+              activeTween = gsap.to(state, {
+                floatX: nextX,
+                floatY: nextY,
+                floatRotation: nextRotation,
+                duration: gsap.utils.random(minDuration, maxDuration, 0.1),
+                delay,
+                ease: "sine.inOut",
+                onUpdate: () => applyHeroMotion(element),
+                onComplete: () => driftToNextPoint(),
+              });
+            };
+
+            driftToNextPoint(index * 0.18);
+            driftStops.push(() => activeTween?.kill());
+          });
+
+          cleanups.push(() => {
+            driftActive = false;
+            driftStops.forEach((stop) => stop());
           });
         }
+
+        cleanups.push(() => {
+          heroMotionStates.forEach((_, element) => {
+            element.style.removeProperty("translate");
+            element.style.removeProperty("rotate");
+          });
+        });
 
         if (finePointer && hero.current) {
           const heroLayers = [
@@ -139,7 +194,6 @@ export default function Home() {
             { element: hero.current.querySelector<HTMLElement>(".hero-sticker"), x: -7, y: -5 },
             { element: hero.current.querySelector<HTMLElement>(".hero-ticket"), x: 6, y: 4 },
             { element: hero.current.querySelector<HTMLElement>(".hero-cta"), x: 8, y: 6 },
-            { element: hero.current.querySelector<HTMLElement>(".contract-pill"), x: -4, y: 3 },
             { element: hero.current.querySelector<HTMLElement>(".scroll-cue"), x: 3, y: -2 },
           ];
           let targetX = 0;
@@ -148,7 +202,7 @@ export default function Home() {
           let currentY = 0;
           let motionActive = false;
 
-          const renderHeroMotion = () => {
+          const renderHeroParallax = () => {
             if (!motionActive) return;
             const smoothing = 1 - Math.pow(0.84, gsap.ticker.deltaRatio(60));
             currentX += (targetX - currentX) * smoothing;
@@ -156,8 +210,10 @@ export default function Home() {
 
             heroLayers.forEach(({ element, x: depthX, y: depthY }) => {
               if (!element) return;
-              element.style.setProperty("--parallax-x", `${currentX * depthX}px`);
-              element.style.setProperty("--parallax-y", `${currentY * depthY}px`);
+              const state = getHeroMotionState(element);
+              state.parallaxX = currentX * depthX;
+              state.parallaxY = currentY * depthY;
+              applyHeroMotion(element);
             });
 
             if (Math.abs(targetX - currentX) < 0.001 && Math.abs(targetY - currentY) < 0.001) {
@@ -181,11 +237,11 @@ export default function Home() {
             motionActive = true;
           };
 
-          gsap.ticker.add(renderHeroMotion);
+          gsap.ticker.add(renderHeroParallax);
           hero.current.addEventListener("pointermove", moveHero, { passive: true });
           hero.current.addEventListener("pointerleave", resetHero);
           cleanups.push(() => {
-            gsap.ticker.remove(renderHeroMotion);
+            gsap.ticker.remove(renderHeroParallax);
             hero.current?.removeEventListener("pointermove", moveHero);
             hero.current?.removeEventListener("pointerleave", resetHero);
           });
@@ -462,10 +518,36 @@ export default function Home() {
     }, root);
 
     return () => {
+      if (copyResetTimer.current) clearTimeout(copyResetTimer.current);
       cleanups.forEach((cleanup) => cleanup());
       context.revert();
     };
   }, []);
+
+  const copyContract = async () => {
+    let copied = false;
+
+    try {
+      await navigator.clipboard.writeText(CONTRACT);
+      copied = true;
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = CONTRACT;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      copied = document.execCommand("copy");
+      textarea.remove();
+    }
+
+    if (!copied) return;
+
+    setContractCopied(true);
+    if (copyResetTimer.current) clearTimeout(copyResetTimer.current);
+    copyResetTimer.current = setTimeout(() => setContractCopied(false), 1800);
+  };
 
   return (
     <main ref={root} className="site-shell">
@@ -528,9 +610,26 @@ export default function Home() {
         <a className="hero-cta hero-reveal" href={DEX_URL} target="_blank" rel="noreferrer">
           GET IN<br />THE POOL <span>↗</span>
         </a>
-        <a className="contract-pill hero-reveal" href={`https://solscan.io/token/${CONTRACT}`} target="_blank" rel="noreferrer">
-          CA: {CONTRACT.slice(0, 5)}...{CONTRACT.slice(-4)} ↗
-        </a>
+        <button
+          type="button"
+          className={`contract-pill hero-reveal${contractCopied ? " is-copied" : ""}`}
+          onClick={copyContract}
+          aria-label={contractCopied ? "Contract address copied" : "Copy contract address"}
+          title={CONTRACT}
+        >
+          <span>CA: {CONTRACT.slice(0, 5)}...{CONTRACT.slice(-4)}</span>
+          <svg className="contract-copy-icon" viewBox="0 0 24 24" aria-hidden="true">
+            {contractCopied ? (
+              <path d="m5 12.5 4 4L19 6.5" />
+            ) : (
+              <>
+                <rect x="8" y="8" width="11" height="11" rx="2" />
+                <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+              </>
+            )}
+          </svg>
+          <span className="sr-only" aria-live="polite">{contractCopied ? "Copied" : ""}</span>
+        </button>
         <div className="scroll-cue hero-reveal"><span>SCROLL FOR THE PAIR</span><i /></div>
       </section>
 
