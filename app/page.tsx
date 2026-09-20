@@ -254,14 +254,7 @@ export default function Home() {
         gsap.set(".lab-result", { autoAlpha: 0, scale: 0.35, rotate: -16 });
         gsap.set(".lab-impact", { autoAlpha: 0, scale: 0.25 });
 
-        const labTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: labSection.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0.82,
-          },
-        });
+        const labTimeline = gsap.timeline({ paused: true });
 
         labTimeline
           .fromTo(".lab-token-lp",
@@ -288,6 +281,33 @@ export default function Home() {
           .to(".lab-impact", { autoAlpha: 0.28, scale: 1.45, duration: 0.65, ease: "power2.out" }, 2.22)
           .fromTo(".lab-copy-after", { autoAlpha: 0, y: 34 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "back.out(1.5)" }, 2.24)
           .to(".pair-lab-stage", { "--lab-fade": "100%", duration: 0.9, ease: "none" }, 2.55);
+
+        let furthestLabProgress = 0;
+        let labProgressTween: gsap.core.Tween | null = null;
+        const labScrollTrigger = ScrollTrigger.create({
+          trigger: labSection.current,
+          start: "top top",
+          end: "bottom bottom",
+          onUpdate: (self) => {
+            if (self.progress <= furthestLabProgress + 0.0001) return;
+
+            furthestLabProgress = self.progress;
+            labProgressTween?.kill();
+            labProgressTween = gsap.to(labTimeline, {
+              progress: furthestLabProgress,
+              duration: 0.42,
+              ease: "power2.out",
+              overwrite: true,
+            });
+
+            if (furthestLabProgress >= 0.999) self.disable(false);
+          },
+        });
+
+        cleanups.push(() => {
+          labProgressTween?.kill();
+          labScrollTrigger.kill();
+        });
 
         if (finePointer && labStage && labField) {
           const lpFace = labField.querySelector<HTMLElement>(".lab-token-lp .lab-token-face");
