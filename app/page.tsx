@@ -26,6 +26,7 @@ export default function Home() {
   const intro = useRef<HTMLDivElement>(null);
   const fullLogo = useRef<HTMLDivElement>(null);
   const navMark = useRef<HTMLDivElement>(null);
+  const navMarkCanvas = useRef<HTMLDivElement>(null);
   const hero = useRef<HTMLElement>(null);
   const labSection = useRef<HTMLElement>(null);
   const gallerySection = useRef<HTMLElement>(null);
@@ -37,7 +38,7 @@ export default function Home() {
     const context = gsap.context(() => {
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const finePointer = window.matchMedia("(pointer: fine)").matches;
-      const destination = navMark.current?.getBoundingClientRect();
+      const destination = navMarkCanvas.current?.getBoundingClientRect();
       const source = fullLogo.current?.getBoundingClientRect();
 
       gsap.set(navMark.current, { autoAlpha: 0 });
@@ -61,13 +62,11 @@ export default function Home() {
           .set(navMark.current, { autoAlpha: 1 }, "reducedHandoff+=0.18")
           .set(intro.current, { display: "none" }, "<");
       } else {
-        const mergedCenterX = source.left + source.width * (872 / 1800);
-        const mergedCenterY = source.top + source.height * (336 / 601);
-        const endScale = destination.height / (source.height * (694 / 601));
         const sourceCenterX = source.left + source.width / 2;
         const sourceCenterY = source.top + source.height / 2;
-        const deltaX = destination.left + destination.width / 2 - sourceCenterX - endScale * (mergedCenterX - sourceCenterX);
-        const deltaY = destination.top + destination.height / 2 - sourceCenterY - endScale * (mergedCenterY - sourceCenterY);
+        const endScale = destination.width / source.width;
+        const deltaX = destination.left + destination.width / 2 - sourceCenterX;
+        const deltaY = destination.top + destination.height / 2 - sourceCenterY;
 
         introTimeline
           .fromTo(fullLogo.current,
@@ -81,14 +80,15 @@ export default function Home() {
           .to(".intro-letter-l", { xPercent: 31, yPercent: -5, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
           .to(".intro-letter-l-arm", { scaleY: 1.24, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
           .to(".intro-letter-p", { xPercent: -12, yPercent: 20, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
-          .to(fullLogo.current, { x: Math.round(deltaX), y: Math.round(deltaY), scale: endScale, duration: 0.88, ease: "expo.inOut" }, "+=0.42")
-          .addLabel("handoff", "-=0.34")
+          .to(fullLogo.current, { x: deltaX, y: deltaY, scale: endScale, duration: 0.88, ease: "expo.inOut" }, "+=0.42")
+          .addLabel("landed")
+          .addLabel("handoff", "landed-=0.34")
           .to([".intro-cover", ".intro-wash", ".intro-bubble"], { autoAlpha: 0, duration: 0.42 }, "handoff")
           .to(intro.current, { backgroundColor: "rgba(125, 53, 255, 0)", duration: 0.42 }, "handoff")
           .to(".hero-reveal", { autoAlpha: 1, y: 0, duration: 0.62, stagger: 0.08, ease: "back.out(1.5)" }, "handoff+=0.06")
-          .to(fullLogo.current, { autoAlpha: 0, duration: 0.14, ease: "none" }, "handoff+=0.38")
-          .set(navMark.current, { autoAlpha: 1 }, "handoff+=0.42")
-          .set(intro.current, { display: "none" }, "<");
+          .set(navMark.current, { autoAlpha: 1 }, "landed")
+          .set(fullLogo.current, { autoAlpha: 0 }, "landed")
+          .set(intro.current, { display: "none" }, "handoff+=0.42");
       }
 
       if (!reduceMotion) {
@@ -430,7 +430,7 @@ export default function Home() {
       <header className="site-header">
         <a className="brand-link" href="#top" aria-label="Liquidity Pair home">
           <div ref={navMark} className="brand-monogram" aria-hidden="true">
-            <div className="brand-monogram-canvas">
+            <div ref={navMarkCanvas} className="brand-monogram-canvas">
               <img className="brand-letter brand-letter-l" src={asset("/brand/wordmark-l-stem.webp")} alt="" />
               <img className="brand-letter brand-letter-l brand-letter-l-arm" src={asset("/brand/wordmark-l-arm.webp")} alt="" />
               <img className="brand-letter brand-letter-p" src={asset("/brand/wordmark-p.webp")} alt="" />

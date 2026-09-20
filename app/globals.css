@@ -62,7 +62,7 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   z-index: 3;
   width: min(82vw, 1080px);
-  aspect-ratio: 2170 / 725;
+  aspect-ratio: 1800 / 601;
   opacity: 0;
   visibility: hidden;
   filter: drop-shadow(0 22px 44px rgba(24, 0, 50, 0.7));
