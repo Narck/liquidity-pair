@@ -28,6 +28,7 @@ export default function Home() {
   const introMark = useRef<HTMLImageElement>(null);
   const navMark = useRef<HTMLImageElement>(null);
   const hero = useRef<HTMLElement>(null);
+  const labSection = useRef<HTMLElement>(null);
   const gallerySection = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -148,6 +149,98 @@ export default function Home() {
             gsap.ticker.remove(renderHeroMotion);
             hero.current?.removeEventListener("pointermove", moveHero);
             hero.current?.removeEventListener("pointerleave", resetHero);
+          });
+        }
+
+        const labStage = labSection.current?.querySelector<HTMLElement>(".pair-lab-stage");
+        const labField = labSection.current?.querySelector<HTMLElement>(".pair-lab-field");
+        const labTokens = gsap.utils.toArray<HTMLElement>(".lab-token");
+
+        gsap.set(".lab-result", { autoAlpha: 0, scale: 0.35, rotate: -16 });
+        gsap.set(".lab-impact", { autoAlpha: 0, scale: 0.25 });
+
+        const labTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: labSection.current,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.82,
+          },
+        });
+
+        labTimeline
+          .fromTo(".lab-token-lp",
+            { xPercent: -175, yPercent: 48, rotate: -24, scale: 0.72 },
+            { xPercent: -58, yPercent: -22, rotate: -7, scale: 1, duration: 1, ease: "power3.out" },
+            0,
+          )
+          .fromTo(".lab-token-met",
+            { xPercent: 175, yPercent: -42, rotate: 24, scale: 0.72 },
+            { xPercent: 58, yPercent: 22, rotate: 7, scale: 1, duration: 1, ease: "power3.out" },
+            0,
+          )
+          .fromTo(".lab-orbit-rings", { rotate: -24, scale: 0.7 }, { rotate: 128, scale: 1, duration: 1.8, ease: "none" }, 0)
+          .to(".lab-token-lp", { xPercent: 10, yPercent: 0, rotate: 350, scale: 0.74, duration: 1.1, ease: "power3.in" }, 1.02)
+          .to(".lab-token-met", { xPercent: -10, yPercent: 0, rotate: -350, scale: 0.74, duration: 1.1, ease: "power3.in" }, 1.02)
+          .to(".lab-copy-before", { autoAlpha: 0, y: -24, duration: 0.28 }, 1.62)
+          .to(labTokens, { autoAlpha: 0, scale: 0.12, duration: 0.2, ease: "power4.in" }, 2.05)
+          .to(".lab-impact", { autoAlpha: 1, scale: 1, duration: 0.22, ease: "expo.out" }, 2.08)
+          .fromTo(".lab-result",
+            { autoAlpha: 0, scale: 0.35, rotate: -16 },
+            { autoAlpha: 1, scale: 1, rotate: 0, duration: 0.58, ease: "back.out(1.8)" },
+            2.13,
+          )
+          .to(".lab-impact", { autoAlpha: 0.28, scale: 1.45, duration: 0.65, ease: "power2.out" }, 2.22)
+          .fromTo(".lab-copy-after", { autoAlpha: 0, y: 34 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "back.out(1.5)" }, 2.24)
+          .to(".pair-lab-stage", { "--lab-fade": "100%", duration: 0.9, ease: "none" }, 2.55);
+
+        if (finePointer && labStage && labField) {
+          const lpFace = labField.querySelector<HTMLElement>(".lab-token-lp .lab-token-face");
+          const metFace = labField.querySelector<HTMLElement>(".lab-token-met .lab-token-face");
+          const result = labField.querySelector<HTMLElement>(".lab-result");
+          const fieldX = gsap.quickTo(labField, "rotationY", { duration: 0.65, ease: "power3.out" });
+          const fieldY = gsap.quickTo(labField, "rotationX", { duration: 0.65, ease: "power3.out" });
+          const lpX = lpFace ? gsap.quickTo(lpFace, "x", { duration: 0.55, ease: "power3.out" }) : null;
+          const lpY = lpFace ? gsap.quickTo(lpFace, "y", { duration: 0.55, ease: "power3.out" }) : null;
+          const metX = metFace ? gsap.quickTo(metFace, "x", { duration: 0.55, ease: "power3.out" }) : null;
+          const metY = metFace ? gsap.quickTo(metFace, "y", { duration: 0.55, ease: "power3.out" }) : null;
+          const resultX = result ? gsap.quickTo(result, "x", { duration: 0.7, ease: "power3.out" }) : null;
+          const resultY = result ? gsap.quickTo(result, "y", { duration: 0.7, ease: "power3.out" }) : null;
+
+          const moveLab = (event: PointerEvent) => {
+            const bounds = labStage.getBoundingClientRect();
+            const x = gsap.utils.clamp(-1, 1, ((event.clientX - bounds.left) / bounds.width) * 2 - 1);
+            const y = gsap.utils.clamp(-1, 1, ((event.clientY - bounds.top) / bounds.height) * 2 - 1);
+            labStage.style.setProperty("--lab-glow-x", `${(x + 1) * 50}%`);
+            labStage.style.setProperty("--lab-glow-y", `${(y + 1) * 50}%`);
+            fieldX(x * 4.5);
+            fieldY(y * -3.5);
+            lpX?.(x * 13);
+            lpY?.(y * 10);
+            metX?.(x * -10);
+            metY?.(y * -8);
+            resultX?.(x * 7);
+            resultY?.(y * 5);
+          };
+
+          const resetLab = () => {
+            labStage.style.setProperty("--lab-glow-x", "50%");
+            labStage.style.setProperty("--lab-glow-y", "50%");
+            fieldX(0);
+            fieldY(0);
+            lpX?.(0);
+            lpY?.(0);
+            metX?.(0);
+            metY?.(0);
+            resultX?.(0);
+            resultY?.(0);
+          };
+
+          labStage.addEventListener("pointermove", moveLab, { passive: true });
+          labStage.addEventListener("pointerleave", resetLab);
+          cleanups.push(() => {
+            labStage.removeEventListener("pointermove", moveLab);
+            labStage.removeEventListener("pointerleave", resetLab);
           });
         }
 
@@ -345,6 +438,38 @@ export default function Home() {
             <span className="spin-sticker">100%<br />PAIR</span>
             <span>SOLANA<br />SUMMER</span>
           </div>
+        </div>
+      </section>
+
+      <section id="lab" ref={labSection} className="pair-lab" aria-labelledby="pair-lab-title">
+        <div className="pair-lab-stage">
+          <div className="pair-lab-stars" aria-hidden="true">
+            {Array.from({ length: 14 }, (_, index) => <i key={`lab-star-${index}`} />)}
+          </div>
+          <div className="pair-lab-heading lab-copy-before">
+            <p>THE PAIRING RITUAL</p>
+            <h2 id="pair-lab-title">LIQUIDITY<br /><em>HAS GRAVITY.</em></h2>
+          </div>
+          <div className="pair-lab-field" aria-hidden="true">
+            <div className="lab-orbit-rings"><i /><i /><i /></div>
+            <div className="lab-token lab-token-lp">
+              <div className="lab-token-face"><strong>LP</strong><span>THE MEME</span></div>
+            </div>
+            <div className="lab-token lab-token-met">
+              <div className="lab-token-face"><strong>$MET</strong><span>THE LIQUIDITY</span></div>
+            </div>
+            <div className="lab-impact" />
+            <div className="lab-result">
+              <img src={asset("/brand/lp-mark.webp")} alt="" />
+            </div>
+          </div>
+          <div className="pair-lab-result-copy lab-copy-after">
+            <span>PERFECTLY PAIRED</span>
+            <strong>MET FOUND<br />ITS MATCH.</strong>
+            <small>LP × MET · ON SOLANA</small>
+          </div>
+          <p className="pair-lab-footnote lab-copy-before">TWO ASSETS. ONE VERY UNSERIOUS POSITION.</p>
+          <div className="pair-lab-scroll lab-copy-before" aria-hidden="true">KEEP PAIRING <i>↓</i></div>
         </div>
       </section>
 
