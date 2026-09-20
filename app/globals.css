@@ -653,6 +653,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .pair-lab.is-complete { height: auto; }
+.pair-lab.is-complete .pair-lab-stage { position: relative; top: auto; bottom: auto; }
 
 .pair-lab-stage {
   --lab-glow-x: 50%;
@@ -1214,7 +1215,6 @@ a { color: inherit; text-decoration: none; }
   .about-note { grid-template-columns: 1fr; margin-top: 36px; }
   .about-badges span { width: 118px; }
   .pair-lab { height: 320dvh; }
-  .pair-lab.is-complete { height: auto; }
   .pair-lab-stage { height: 100dvh; min-height: 100svh; }
   .pair-lab-stage::after { display: none; }
   .pair-lab-heading { top: 92px; left: 20px; }

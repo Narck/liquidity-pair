@@ -284,39 +284,38 @@ export default function Home() {
 
         let furthestLabProgress = 0;
         let labProgressTween: gsap.core.Tween | null = null;
-        let labCollapseTween: gsap.core.Tween | null = null;
-        let labDidCollapse = false;
-        let previousScrollBehavior: string | null = null;
+        let labReleaseQueued = false;
+        let labReleaseScrollY = 0;
 
-        const collapseLabScrollSpace = () => {
+        const finishLabRelease = () => {
           const section = labSection.current;
-          if (!section || !labStage || labDidCollapse) return;
+          if (!section || !labStage || !labReleaseQueued) return;
 
-          labDidCollapse = true;
-          const sectionTop = section.offsetTop;
-          const finalHeight = labStage.offsetHeight;
-          previousScrollBehavior = document.documentElement.style.scrollBehavior;
+          labReleaseQueued = false;
+          window.removeEventListener("scroll", handleLabReleaseScroll);
+          const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+          const currentScrollY = window.scrollY;
+          const expandedHeight = section.offsetHeight;
           document.documentElement.style.scrollBehavior = "auto";
-          gsap.set(section, { height: section.offsetHeight });
-          labCollapseTween = gsap.to(section, {
-            height: finalHeight,
-            duration: 0.48,
-            ease: "power3.inOut",
-            overwrite: true,
-            onUpdate: () => {
-              const remainingScrollSpace = Math.max(0, section.offsetHeight - window.innerHeight);
-              window.scrollTo(0, sectionTop + remainingScrollSpace);
-            },
-            onComplete: () => {
-              section.classList.add("is-complete");
-              gsap.set(section, { clearProps: "height" });
-              window.scrollTo(0, sectionTop);
-              ScrollTrigger.refresh();
-              window.scrollTo(0, sectionTop);
-              document.documentElement.style.scrollBehavior = previousScrollBehavior ?? "";
-              previousScrollBehavior = null;
-            },
-          });
+          section.classList.add("is-complete");
+          const removedScrollSpace = expandedHeight - section.offsetHeight;
+          const preservedScrollY = currentScrollY - removedScrollSpace;
+          window.scrollTo(0, preservedScrollY);
+          ScrollTrigger.refresh();
+          window.scrollTo(0, preservedScrollY);
+          document.documentElement.style.scrollBehavior = previousScrollBehavior;
+        };
+
+        const handleLabReleaseScroll = () => {
+          if (!labReleaseQueued || Math.abs(window.scrollY - labReleaseScrollY) < 1) return;
+          finishLabRelease();
+        };
+
+        const queueLabPinRelease = () => {
+          if (labReleaseQueued) return;
+          labReleaseQueued = true;
+          labReleaseScrollY = window.scrollY;
+          window.addEventListener("scroll", handleLabReleaseScroll, { passive: true });
         };
 
         const labScrollTrigger = ScrollTrigger.create({
@@ -328,29 +327,27 @@ export default function Home() {
 
             furthestLabProgress = self.progress;
             labProgressTween?.kill();
+            const reachedLabEnd = furthestLabProgress >= 0.999;
             labProgressTween = gsap.to(labTimeline, {
               progress: furthestLabProgress,
-              duration: 0.42,
+              duration: reachedLabEnd ? 0.18 : 0.42,
               ease: "power2.out",
               overwrite: true,
+              onComplete: reachedLabEnd ? queueLabPinRelease : undefined,
             });
 
-            if (furthestLabProgress >= 0.999) {
+            if (reachedLabEnd) {
               self.disable(false);
-              collapseLabScrollSpace();
             }
           },
         });
 
         cleanups.push(() => {
           labProgressTween?.kill();
-          labCollapseTween?.kill();
           labScrollTrigger.kill();
+          window.removeEventListener("scroll", handleLabReleaseScroll);
           labSection.current?.classList.remove("is-complete");
           labSection.current?.style.removeProperty("height");
-          if (previousScrollBehavior !== null) {
-            document.documentElement.style.scrollBehavior = previousScrollBehavior;
-          }
         });
 
         if (finePointer && labStage && labField) {
