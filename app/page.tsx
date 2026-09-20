@@ -63,9 +63,11 @@ export default function Home() {
       } else {
         const mergedCenterX = source.left + source.width * (872 / 1800);
         const mergedCenterY = source.top + source.height * (336 / 601);
-        const deltaX = destination.left + destination.width / 2 - mergedCenterX;
-        const deltaY = destination.top + destination.height / 2 - mergedCenterY;
         const endScale = destination.height / (source.height * (694 / 601));
+        const sourceCenterX = source.left + source.width / 2;
+        const sourceCenterY = source.top + source.height / 2;
+        const deltaX = destination.left + destination.width / 2 - sourceCenterX - endScale * (mergedCenterX - sourceCenterX);
+        const deltaY = destination.top + destination.height / 2 - sourceCenterY - endScale * (mergedCenterY - sourceCenterY);
 
         introTimeline
           .fromTo(fullLogo.current,
@@ -421,8 +423,7 @@ export default function Home() {
           <img className="intro-wordmark-full" src={asset("/brand/liquidity-pair-wordmark.webp")} alt="" fetchPriority="high" />
           <img className="intro-letter intro-letter-l intro-letter-l-stem" src={asset("/brand/wordmark-l-stem.webp")} alt="" fetchPriority="high" />
           <img className="intro-letter intro-letter-l intro-letter-l-arm" src={asset("/brand/wordmark-l-arm.webp")} alt="" fetchPriority="high" />
-          <img className="intro-letter intro-letter-p" src={asset("/brand/wordmark-p-loop.webp")} alt="" fetchPriority="high" />
-          <img className="intro-letter intro-letter-p" src={asset("/brand/wordmark-p-stem.webp")} alt="" fetchPriority="high" />
+          <img className="intro-letter intro-letter-p" src={asset("/brand/wordmark-p.webp")} alt="" fetchPriority="high" />
         </div>
       </div>
 
@@ -432,8 +433,7 @@ export default function Home() {
             <div className="brand-monogram-canvas">
               <img className="brand-letter brand-letter-l" src={asset("/brand/wordmark-l-stem.webp")} alt="" />
               <img className="brand-letter brand-letter-l brand-letter-l-arm" src={asset("/brand/wordmark-l-arm.webp")} alt="" />
-              <img className="brand-letter brand-letter-p" src={asset("/brand/wordmark-p-loop.webp")} alt="" />
-              <img className="brand-letter brand-letter-p" src={asset("/brand/wordmark-p-stem.webp")} alt="" />
+              <img className="brand-letter brand-letter-p" src={asset("/brand/wordmark-p.webp")} alt="" />
             </div>
           </div>
         </a>
