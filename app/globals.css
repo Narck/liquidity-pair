@@ -751,7 +751,13 @@ a { color: inherit; text-decoration: none; }
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: repeating-conic-gradient(from 0deg, var(--sun) 0 7deg, transparent 7deg 16deg);
+  background: repeating-conic-gradient(
+    from -7.5deg,
+    transparent 0 4.5deg,
+    var(--sun) 4.5deg 10.5deg,
+    transparent 10.5deg 15deg
+  );
+  clip-path: circle(50% at 50% 50%);
   filter: drop-shadow(0 0 28px var(--hot));
   opacity: 0;
   will-change: transform, opacity;
