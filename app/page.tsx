@@ -36,6 +36,30 @@ export default function Home() {
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const cleanups: Array<() => void> = [];
+    const pageRoot = document.documentElement;
+    const previousScrollRestoration = window.history.scrollRestoration;
+    let scrollLocked = true;
+
+    const scrollToInitialState = () => {
+      const previousScrollBehavior = pageRoot.style.scrollBehavior;
+      pageRoot.style.scrollBehavior = "auto";
+      window.scrollTo(0, 0);
+      pageRoot.style.scrollBehavior = previousScrollBehavior;
+    };
+
+    const unlockPageScroll = () => {
+      if (!scrollLocked) return;
+      scrollLocked = false;
+      scrollToInitialState();
+      pageRoot.classList.remove("is-intro-locked");
+      ScrollTrigger.refresh();
+    };
+
+    window.history.scrollRestoration = "manual";
+    pageRoot.classList.add("is-intro-locked");
+    scrollToInitialState();
+    window.addEventListener("beforeunload", scrollToInitialState);
+    window.addEventListener("pagehide", scrollToInitialState);
 
     const context = gsap.context(() => {
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -51,6 +75,7 @@ export default function Home() {
         defaults: { ease: "power3.inOut" },
         onComplete: () => {
           if (intro.current) intro.current.style.display = "none";
+          unlockPageScroll();
         },
       });
 
@@ -62,7 +87,8 @@ export default function Home() {
           .to(intro.current, { backgroundColor: "rgba(125, 53, 255, 0)", duration: 0.18 }, "reducedHandoff")
           .to(".hero-reveal", { autoAlpha: 1, y: 0, duration: 0.1 }, "reducedHandoff")
           .set(navMark.current, { autoAlpha: 1 }, "reducedHandoff+=0.18")
-          .set(intro.current, { display: "none" }, "<");
+          .set(intro.current, { display: "none" }, "<")
+          .call(unlockPageScroll, [], "<");
       } else {
         const sourceCenterX = source.left + source.width / 2;
         const sourceCenterY = source.top + source.height / 2;
@@ -90,7 +116,8 @@ export default function Home() {
           .to(".hero-reveal", { autoAlpha: 1, y: 0, duration: 0.62, stagger: 0.08, ease: "back.out(1.5)" }, "handoff+=0.06")
           .set(navMark.current, { autoAlpha: 1 }, "landed")
           .set(fullLogo.current, { autoAlpha: 0 }, "landed")
-          .set(intro.current, { display: "none" }, "handoff+=0.42");
+          .set(intro.current, { display: "none" }, "handoff+=0.42")
+          .call(unlockPageScroll, [], "<");
       }
 
       if (!reduceMotion) {
@@ -582,6 +609,10 @@ export default function Home() {
       if (copyResetTimer.current) clearTimeout(copyResetTimer.current);
       cleanups.forEach((cleanup) => cleanup());
       context.revert();
+      window.removeEventListener("beforeunload", scrollToInitialState);
+      window.removeEventListener("pagehide", scrollToInitialState);
+      pageRoot.classList.remove("is-intro-locked");
+      window.history.scrollRestoration = previousScrollRestoration;
     };
   }, []);
 

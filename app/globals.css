@@ -19,6 +19,23 @@ html {
   scrollbar-gutter: stable;
 }
 
+html.is-intro-locked,
+html.is-intro-locked body {
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+html.is-intro-locked {
+  scrollbar-gutter: auto;
+  scrollbar-width: none;
+}
+
+html.is-intro-locked::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 ::-webkit-scrollbar { width: 13px; height: 13px; }
 ::-webkit-scrollbar-track { background: var(--ink); }
 ::-webkit-scrollbar-thumb {
