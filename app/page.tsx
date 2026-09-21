@@ -775,12 +775,12 @@ export default function Home() {
         </a>
         <nav aria-label="Primary navigation">
           <a href="#about">THE LORE</a>
-          <a href="#gallery">THE PAIR</a>
+          <a href="#gallery">THE LIQUIDITY</a>
           <a className="nav-social" href={X_URL} target="_blank" rel="noreferrer" aria-label="Liquidity Pair on X">
             <span>X</span><span aria-hidden="true">↗</span>
           </a>
           <a className="nav-chart" href={DEX_URL} target="_blank" rel="noreferrer">
-            <span>PEEP CHART</span><span className="nav-arrow" aria-hidden="true">↗</span>
+            <span>VIEW THE PAIR</span><span className="nav-arrow" aria-hidden="true">↗</span>
           </a>
         </nav>
       </header>
@@ -846,14 +846,14 @@ export default function Home() {
           </div>
           <div className="about-copy">
             <p className="eyebrow">A VERY SERIOUS CRYPTO PROJECT*</p>
-            <h2>METEORA MADE<br />LIQUIDITY POOLS.<br /><em>WE BROUGHT<br />THE PAIR.</em></h2>
+            <h2>METEORA MADE<br />LIQUIDITY POOLS.</h2>
             <div className="about-note">
-              <p>One of the first coins to hit Ember. Paired directly with $MET. Powered by liquidity, sunshine, and absolutely no unnecessary lore.</p>
+              <p>One of the first coins to hit Ember. Paired directly with $MET. Powered by the biggest pair of liquidity on chain.</p>
               <small>*it is not serious at all</small>
             </div>
           </div>
           <div className="about-badges" aria-hidden="true">
-            <span className="spin-sticker">100%<br />PAIR</span>
+            <span className="spin-sticker">100%<br />LIQUID</span>
             <span>SOLANA<br />SUMMER</span>
           </div>
         </div>
