@@ -2,7 +2,9 @@
 
 import { useEffect, useRef } from "react";
 
-const MAX_RIPPLES = 12;
+const MAX_RIPPLES = 8;
+const RIPPLE_LIFETIME = 3.8;
+const AMBIENT_RIPPLE_DELAY = 5200;
 
 const VERTEX_SHADER = `
   attribute vec2 aPosition;
@@ -66,10 +68,9 @@ const FRAGMENT_SHADER = `
 
     vec2 uv = clamp(coverUv(vUv + displacement), 0.001, 0.999);
     float chroma = min(abs(lightBand) * 0.0018, 0.004);
-    vec3 color;
-    color.r = texture2D(uTexture, clamp(uv + vec2(chroma, 0.0), 0.001, 0.999)).r;
-    color.g = texture2D(uTexture, uv).g;
-    color.b = texture2D(uTexture, clamp(uv - vec2(chroma, 0.0), 0.001, 0.999)).b;
+    vec3 baseColor = texture2D(uTexture, uv).rgb;
+    vec3 fringeColor = texture2D(uTexture, clamp(uv + vec2(chroma, 0.0), 0.001, 0.999)).rgb;
+    vec3 color = vec3(fringeColor.r, baseColor.g, baseColor.b);
     color += max(lightBand, 0.0) * vec3(0.12, 0.055, 0.18);
 
     gl_FragColor = vec4(color, 1.0);
@@ -124,13 +125,14 @@ export default function HeroRipple({ src, alt, className = "" }: HeroRippleProps
     let buffer: WebGLBuffer | null = null;
     let texture: WebGLTexture | null = null;
     let frame = 0;
+    let ambientTimer = 0;
+    let renderUntil = 0;
     let visible = true;
     let textureReady = false;
     let rippleIndex = 0;
     let lastPointerRipple = 0;
     let lastPointerX = Number.NaN;
     let lastPointerY = Number.NaN;
-    let lastAmbientRipple = -1.4;
     const startedAt = performance.now();
     const ripples = new Float32Array(MAX_RIPPLES * 4);
 
@@ -201,6 +203,13 @@ export default function HeroRipple({ src, alt, className = "" }: HeroRippleProps
 
     const elapsedSeconds = () => (performance.now() - startedAt) / 1000;
 
+    const requestRender = (duration = 0) => {
+      renderUntil = Math.max(renderUntil, elapsedSeconds() + duration);
+      if (!frame && textureReady && visible && !document.hidden) {
+        frame = requestAnimationFrame(render);
+      }
+    };
+
     const addRipple = (x: number, y: number, strength: number) => {
       const offset = (rippleIndex % MAX_RIPPLES) * 4;
       rippleIndex += 1;
@@ -208,11 +217,12 @@ export default function HeroRipple({ src, alt, className = "" }: HeroRippleProps
       ripples[offset + 1] = Math.max(0.02, Math.min(0.98, 1 - y));
       ripples[offset + 2] = elapsedSeconds();
       ripples[offset + 3] = strength;
+      requestRender(RIPPLE_LIFETIME);
     };
 
     const resize = () => {
       const bounds = container.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth <= 760 ? 1.25 : 1.5);
       const width = Math.max(1, Math.round(bounds.width * dpr));
       const height = Math.max(1, Math.round(bounds.height * dpr));
       if (canvas.width !== width || canvas.height !== height) {
@@ -231,6 +241,7 @@ export default function HeroRipple({ src, alt, className = "" }: HeroRippleProps
       textureReady = true;
       container.classList.add("is-ripple-ready");
       resize();
+      requestRender();
     };
 
     const pointerPosition = (event: PointerEvent) => {
@@ -265,48 +276,85 @@ export default function HeroRipple({ src, alt, className = "" }: HeroRippleProps
       lastPointerY = Number.NaN;
     };
 
-    const render = () => {
-      frame = requestAnimationFrame(render);
+    const activeGl = gl;
+    const activeCanvas = canvas;
+    const activeImage = image;
+
+    function render() {
+      frame = 0;
       if (!textureReady || !visible || document.hidden) return;
-
       const time = elapsedSeconds();
-      if (time - lastAmbientRipple > 3.4) {
-        lastAmbientRipple = time;
-        addRipple(0.18 + Math.random() * 0.64, 0.64 + Math.random() * 0.22, 0.24);
-      }
+      activeGl.useProgram(program);
+      activeGl.uniform2f(resolutionLocation, activeCanvas.width, activeCanvas.height);
+      activeGl.uniform2f(imageResolutionLocation, activeImage.naturalWidth, activeImage.naturalHeight);
+      activeGl.uniform1f(timeLocation, time);
+      activeGl.uniform1f(focusLocation, window.innerWidth <= 600 ? 0.52 : 0.5);
+      activeGl.uniform4fv(ripplesLocation, ripples);
+      activeGl.drawArrays(activeGl.TRIANGLE_STRIP, 0, 4);
 
-      gl.useProgram(program);
-      gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-      gl.uniform2f(imageResolutionLocation, image.naturalWidth, image.naturalHeight);
-      gl.uniform1f(timeLocation, time);
-      gl.uniform1f(focusLocation, window.innerWidth <= 600 ? 0.52 : 0.5);
-      gl.uniform4fv(ripplesLocation, ripples);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      if (time < renderUntil) frame = requestAnimationFrame(render);
+    }
+
+    const scheduleAmbientRipple = (delay = AMBIENT_RIPPLE_DELAY) => {
+      window.clearTimeout(ambientTimer);
+      if (!visible || document.hidden) return;
+      ambientTimer = window.setTimeout(() => {
+        if (visible && !document.hidden) {
+          addRipple(0.18 + Math.random() * 0.64, 0.64 + Math.random() * 0.22, 0.22);
+          scheduleAmbientRipple();
+        }
+      }, delay);
+    };
+
+    const stopRendering = () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      window.clearTimeout(ambientTimer);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stopRendering();
+      } else if (visible) {
+        requestRender();
+        scheduleAmbientRipple(1200);
+      }
     };
 
     const resizeObserver = new ResizeObserver(resize);
     const intersectionObserver = new IntersectionObserver(
-      ([entry]) => { visible = entry.isIntersecting; },
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) {
+          requestRender();
+          scheduleAmbientRipple(1200);
+        } else {
+          stopRendering();
+        }
+      },
       { threshold: 0.01 },
     );
+    const eventTarget = container.parentElement;
 
     resizeObserver.observe(container);
     intersectionObserver.observe(container);
-    container.parentElement?.addEventListener("pointermove", handlePointerMove, { passive: true });
-    container.parentElement?.addEventListener("pointerdown", handlePointerDown, { passive: true });
-    container.parentElement?.addEventListener("pointerleave", handlePointerLeave);
+    eventTarget?.addEventListener("pointermove", handlePointerMove, { passive: true });
+    eventTarget?.addEventListener("pointerdown", handlePointerDown, { passive: true });
+    eventTarget?.addEventListener("pointerleave", handlePointerLeave);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     image.addEventListener("load", uploadImage);
     if (image.complete) uploadImage();
     resize();
-    frame = requestAnimationFrame(render);
+    scheduleAmbientRipple(1200);
 
     return () => {
-      cancelAnimationFrame(frame);
+      stopRendering();
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
-      container.parentElement?.removeEventListener("pointermove", handlePointerMove);
-      container.parentElement?.removeEventListener("pointerdown", handlePointerDown);
-      container.parentElement?.removeEventListener("pointerleave", handlePointerLeave);
+      eventTarget?.removeEventListener("pointermove", handlePointerMove);
+      eventTarget?.removeEventListener("pointerdown", handlePointerDown);
+      eventTarget?.removeEventListener("pointerleave", handlePointerLeave);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       image.removeEventListener("load", uploadImage);
       container.classList.remove("is-ripple-ready");
       if (texture) gl.deleteTexture(texture);
