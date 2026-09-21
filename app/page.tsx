@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import CustomPointer from "./CustomPointer";
 import HeroRipple from "./HeroRipple";
 
 const CONTRACT = "8CECyxU5dTBwvzYXDcvzkgQ3qV8nsxXDrST396isn4Tu";
@@ -747,6 +748,7 @@ export default function Home() {
 
   return (
     <main ref={root} className="site-shell">
+      <CustomPointer />
       <div ref={intro} className="intro" aria-label="Liquidity Pair intro">
         <img className="intro-cover" src={asset("/brand/lp-hero.webp")} alt="" fetchPriority="high" />
         <div className="intro-wash" />
