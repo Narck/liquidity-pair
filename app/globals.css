@@ -243,6 +243,12 @@ html.is-intro-locked .site-shell {
   transform-origin: 0 75%;
 }
 
+.intro-letter-l-tip,
+.brand-letter-l-tip {
+  z-index: 3;
+  clip-path: polygon(10.4% 0, 19.1% 0, 19.1% 20%, 10.4% 20%);
+}
+
 .intro-bubble {
   position: absolute;
   z-index: 4;

@@ -757,6 +757,7 @@ export default function Home() {
         <div ref={fullLogo} className="intro-wordmark" role="img" aria-label="Liquidity Pair">
           <img className="intro-wordmark-full" src={asset("/brand/liquidity-pair-wordmark.webp")} alt="" fetchPriority="high" />
           <img className="intro-letter intro-letter-l intro-letter-l-stem" src={asset("/brand/wordmark-l-stem.webp")} alt="" fetchPriority="high" />
+          <img className="intro-letter intro-letter-l intro-letter-l-tip" src={asset("/brand/liquidity-pair-wordmark.webp")} alt="" fetchPriority="high" />
           <img className="intro-letter intro-letter-l intro-letter-l-arm" src={asset("/brand/wordmark-l-arm.webp")} alt="" fetchPriority="high" />
           <img className="intro-letter intro-letter-p" src={asset("/brand/wordmark-p.webp")} alt="" fetchPriority="high" />
         </div>
@@ -767,6 +768,7 @@ export default function Home() {
           <div ref={navMark} className="brand-monogram" aria-hidden="true">
             <div ref={navMarkCanvas} className="brand-monogram-canvas">
               <img className="brand-letter brand-letter-l" src={asset("/brand/wordmark-l-stem.webp")} alt="" />
+              <img className="brand-letter brand-letter-l brand-letter-l-tip" src={asset("/brand/liquidity-pair-wordmark.webp")} alt="" />
               <img className="brand-letter brand-letter-l brand-letter-l-arm" src={asset("/brand/wordmark-l-arm.webp")} alt="" />
               <img className="brand-letter brand-letter-p" src={asset("/brand/wordmark-p.webp")} alt="" />
             </div>
