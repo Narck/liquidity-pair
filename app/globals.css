@@ -246,7 +246,7 @@ html.is-intro-locked .site-shell {
 .intro-letter-l-tip,
 .brand-letter-l-tip {
   z-index: 3;
-  clip-path: polygon(10.4% 0, 19.1% 0, 19.1% 20%, 10.4% 20%);
+  clip-path: polygon(10.4% 0, 19.1% 0, 19.1% 10%, 16.2% 22%, 12.9% 32%, 10.4% 32%);
 }
 
 .intro-bubble {

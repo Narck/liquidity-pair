@@ -396,7 +396,41 @@ export default function Home() {
           },
         });
 
+        const galleryLink = document.querySelector<HTMLAnchorElement>('.site-header a[href="#gallery"]');
+        let galleryNavigationFrame = 0;
+        const navigateToGallery = (event: MouseEvent) => {
+          const section = labSection.current;
+          const gallery = gallerySection.current;
+          if (!section || !gallery) return;
+
+          event.preventDefault();
+          labProgressTween?.kill();
+          furthestLabProgress = 1;
+          labTimeline.progress(1).pause();
+          labScrollTrigger.disable(false);
+          labReleaseQueued = false;
+          window.removeEventListener("scroll", handleLabReleaseScroll);
+
+          if (!section.classList.contains("is-complete")) {
+            section.classList.add("is-complete");
+            ScrollTrigger.refresh();
+          }
+
+          cancelAnimationFrame(galleryNavigationFrame);
+          galleryNavigationFrame = requestAnimationFrame(() => {
+            galleryNavigationFrame = requestAnimationFrame(() => {
+              const galleryTop = window.scrollY + gallery.getBoundingClientRect().top;
+              window.history.pushState(null, "", "#gallery");
+              window.scrollTo({ top: galleryTop });
+            });
+          });
+        };
+
+        galleryLink?.addEventListener("click", navigateToGallery);
+
         cleanups.push(() => {
+          cancelAnimationFrame(galleryNavigationFrame);
+          galleryLink?.removeEventListener("click", navigateToGallery);
           labProgressTween?.kill();
           labScrollTrigger.kill();
           window.removeEventListener("scroll", handleLabReleaseScroll);
