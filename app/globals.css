@@ -239,10 +239,6 @@ html.is-intro-locked .site-shell {
   will-change: transform, opacity;
 }
 
-.intro-letter-l-arm {
-  transform-origin: 0 75%;
-}
-
 .intro-letter-l-tip,
 .brand-letter-l-tip {
   z-index: 3;
@@ -349,11 +345,6 @@ html.is-intro-locked .site-header {
 
 .brand-letter-l {
   transform: translate(31%, -5%);
-}
-
-.brand-letter-l-arm {
-  transform: translate(31%, -5%) scaleY(1.24);
-  transform-origin: 0 75%;
 }
 
 .brand-letter-p {

@@ -136,7 +136,6 @@ export default function Home() {
           .to(".intro-wordmark-full", { autoAlpha: 0, filter: "blur(10px)", duration: 0.46, delay: 0.35, ease: "power2.inOut" })
           .addLabel("lettersMerge", "+=0.08")
           .to(".intro-letter-l", { xPercent: 31, yPercent: -5, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
-          .to(".intro-letter-l-arm", { scaleY: 1.24, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
           .to(".intro-letter-p", { xPercent: -12, yPercent: 20, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
           .to(fullLogo.current, { x: deltaX, y: deltaY, scale: endScale, duration: 0.88, ease: "expo.inOut" }, "+=0.42")
           .addLabel("landed")
