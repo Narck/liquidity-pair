@@ -100,7 +100,7 @@ export default function Home() {
 
       gsap.set(navMark.current, { autoAlpha: 0 });
       gsap.set(".hero-reveal", { autoAlpha: 0, y: 28 });
-      gsap.set(".intro-letter", { autoAlpha: 0 });
+      gsap.set(".intro-letter", { autoAlpha: 1 });
 
       const introTimeline = gsap.timeline({
         defaults: { ease: "power3.inOut" },
@@ -134,7 +134,6 @@ export default function Home() {
           )
           .fromTo(".intro-bubble", { autoAlpha: 0, scale: 0, rotate: -24 }, { autoAlpha: 1, scale: 1, rotate: 0, duration: 0.62, stagger: 0.08, ease: "back.out(2)" }, "-=0.35")
           .to(".intro-wordmark-full", { autoAlpha: 0, filter: "blur(10px)", duration: 0.46, delay: 0.35, ease: "power2.inOut" })
-          .to(".intro-letter", { autoAlpha: 1, duration: 0.46, ease: "none" }, "<")
           .addLabel("lettersMerge", "+=0.08")
           .to(".intro-letter-l", { xPercent: 31, yPercent: -5, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
           .to(".intro-letter-l-arm", { scaleY: 1.24, duration: 0.72, ease: "expo.inOut" }, "lettersMerge")
