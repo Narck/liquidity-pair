@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "@fontsource/teko/700.css";
+import "@fontsource/archivo-black/400.css";
 import "@fontsource/sora/400.css";
 import "@fontsource/sora/600.css";
 import "@fontsource/sora/700.css";
