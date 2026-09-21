@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import HeroRipple from "./HeroRipple";
 
 const CONTRACT = "8CECyxU5dTBwvzYXDcvzkgQ3qV8nsxXDrST396isn4Tu";
 const DEX_URL = "https://dexscreener.com/solana/xZJTKthDmRx2H7fHp5FTeuv9V8vVrpYZkToa5sCmAXV";
@@ -183,8 +184,6 @@ export default function Home() {
         if (hero.current) {
           const floatScale = window.innerWidth <= 600 ? 0.65 : 1;
           const heroFloaters = [
-            { element: hero.current.querySelector<HTMLElement>(".hero-space-far"), x: 8, y: 6, rotation: 0, minDuration: 11, maxDuration: 15 },
-            { element: hero.current.querySelector<HTMLElement>(".hero-space-near"), x: 14, y: 10, rotation: 0, minDuration: 10, maxDuration: 14 },
             { element: hero.current.querySelector<HTMLElement>(".hero-sticker"), x: 42, y: 34, rotation: 3.2, minDuration: 8.8, maxDuration: 11.8 },
             { element: hero.current.querySelector<HTMLElement>(".hero-ticket"), x: 46, y: 38, rotation: 3, minDuration: 9.2, maxDuration: 12.5 },
             { element: hero.current.querySelector<HTMLElement>(".hero-cta"), x: 36, y: 42, rotation: 3.6, minDuration: 8.5, maxDuration: 11.5 },
@@ -245,8 +244,6 @@ export default function Home() {
 
         if (finePointer && hero.current) {
           const heroLayers = [
-            { element: hero.current.querySelector<HTMLElement>(".hero-space-far"), x: -5, y: -4 },
-            { element: hero.current.querySelector<HTMLElement>(".hero-space-near"), x: 13, y: 9 },
             { element: hero.current.querySelector<HTMLElement>(".hero-sticker"), x: -7, y: -5 },
             { element: hero.current.querySelector<HTMLElement>(".hero-ticket"), x: 6, y: 4 },
             { element: hero.current.querySelector<HTMLElement>(".hero-cta"), x: 8, y: 6 },
@@ -786,17 +783,12 @@ export default function Home() {
       </header>
 
       <section id="top" ref={hero} className="hero">
-        <img className="hero-art" src={asset("/brand/lp-hero.webp")} alt="Liquidity Pair character in a cosmic liquidity pool" />
+        <HeroRipple
+          className="hero-art"
+          src={asset("/brand/lp-hero.webp")}
+          alt="Liquidity Pair character in a cosmic liquidity pool"
+        />
         <div className="hero-shade" />
-        <div className="hero-space-layer hero-space-far" aria-hidden="true">
-          {Array.from({ length: 9 }, (_, index) => <i className="hero-star" key={`far-star-${index}`} />)}
-        </div>
-        <div className="hero-space-layer hero-space-near" aria-hidden="true">
-          {Array.from({ length: 6 }, (_, index) => <i className="hero-star" key={`near-star-${index}`} />)}
-          <i className="hero-streak hero-streak-one" />
-          <i className="hero-streak hero-streak-two" />
-          <i className="hero-streak hero-streak-three" />
-        </div>
         <div className="hero-sticker hero-reveal">
           <span>NO LORE</span>
           <strong><span>JUST</span><span>LIQUIDITY</span></strong>
