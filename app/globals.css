@@ -598,7 +598,7 @@ html.is-intro-locked .site-header {
   font-size: clamp(2.3rem, 5vw, 5.2rem);
   letter-spacing: 0.035em;
   white-space: nowrap;
-  -webkit-text-stroke: 2px var(--ink);
+  text-shadow: 2px 2px 0 var(--ink);
 }
 
 @keyframes ticker { to { transform: translateX(-50%); } }
@@ -626,7 +626,7 @@ html.is-intro-locked .site-header {
   letter-spacing: 0.12em;
 }
 
-.about-label b { font-family: "Teko", Impact, sans-serif; font-size: 5rem; color: var(--hot); -webkit-text-stroke: 2px var(--ink); }
+.about-label b { font-family: "Teko", Impact, sans-serif; font-size: 5rem; color: var(--hot); text-shadow: 2px 2px 0 var(--ink); }
 
 .about-copy .eyebrow { margin: 0 0 16px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.12em; }
 
@@ -644,7 +644,6 @@ html.is-intro-locked .site-header {
   color: var(--violet);
   font-style: normal;
   text-shadow: 5px 5px 0 var(--hot);
-  -webkit-text-stroke: 2px var(--ink);
 }
 
 .about-note {
@@ -782,7 +781,6 @@ html.is-intro-locked .site-header {
   color: var(--sun);
   font-style: normal;
   text-shadow: 5px 5px 0 var(--hot), 9px 9px 0 var(--ink);
-  -webkit-text-stroke: 2px var(--ink);
 }
 
 .pair-lab-field {
@@ -916,7 +914,6 @@ html.is-intro-locked .site-header {
   font-size: clamp(3.2rem, 6vw, 6.5rem);
   line-height: 0.72;
   text-shadow: 5px 5px 0 var(--hot), 8px 8px 0 var(--ink);
-  -webkit-text-stroke: 2px var(--ink);
 }
 
 .pair-lab-footnote {
@@ -991,7 +988,6 @@ html.is-intro-locked .site-header {
   font-weight: 700;
   line-height: 0.82;
   text-shadow: 6px 6px 0 var(--hot), 10px 10px 0 var(--ink);
-  -webkit-text-stroke: 2px var(--ink);
 }
 
 .gallery-deck {
@@ -1177,7 +1173,6 @@ html.is-intro-locked .site-header {
   font-weight: 700;
   line-height: 0.75;
   text-shadow: 7px 7px 0 var(--sun), 12px 12px 0 var(--ink);
-  -webkit-text-stroke: 3px var(--ink);
 }
 
 .finale-actions { position: relative; z-index: 2; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 40px; }
@@ -1245,7 +1240,7 @@ html.is-intro-locked .site-header {
   .intro-wordmark { width: 94vw; }
   .about-grid { padding: 80px 22px; }
   .about-copy h2 { font-size: clamp(4.1rem, 20vw, 6.6rem); line-height: 0.78; }
-  .about-copy h2 em { text-shadow: 3px 3px 0 var(--hot); -webkit-text-stroke: 1.5px var(--ink); }
+  .about-copy h2 em { text-shadow: 3px 3px 0 var(--hot); }
   .about-note { grid-template-columns: 1fr; margin-top: 36px; }
   .about-badges span { width: 118px; }
   .pair-lab { height: 320dvh; }
@@ -1254,7 +1249,7 @@ html.is-intro-locked .site-header {
   .pair-lab-heading { top: 92px; left: 20px; }
   .pair-lab-heading p { font-size: 0.72rem; }
   .pair-lab-heading h2 { font-size: clamp(4rem, 18vw, 6rem); line-height: 0.74; }
-  .pair-lab-heading h2 em { text-shadow: 3px 3px 0 var(--hot), 6px 6px 0 var(--ink); -webkit-text-stroke: 1.5px var(--ink); }
+  .pair-lab-heading h2 em { text-shadow: 3px 3px 0 var(--hot), 6px 6px 0 var(--ink); }
   .pair-lab-field { top: 52%; width: 116vw; transform: translate(-50%, -43%); }
   .lab-token { width: 138px; margin: -69px 0 0 -69px; }
   .lab-token-face { border-width: 4px; box-shadow: 7px 8px 0 var(--ink), 0 0 28px rgba(53, 229, 220, 0.2); }
@@ -1264,7 +1259,7 @@ html.is-intro-locked .site-header {
   .lab-impact { width: 92vw; }
   .lab-result { width: 205px; border-width: 4px; box-shadow: 8px 9px 0 var(--hot), 13px 15px 0 var(--ink), 0 0 48px rgba(53, 229, 220, 0.3); }
   .pair-lab-result-copy { right: 18px; bottom: 7%; left: 18px; text-align: center; }
-  .pair-lab-result-copy strong { font-size: clamp(3.5rem, 17vw, 5.3rem); text-shadow: 3px 3px 0 var(--hot), 6px 6px 0 var(--ink); -webkit-text-stroke: 1.5px var(--ink); }
+  .pair-lab-result-copy strong { font-size: clamp(3.5rem, 17vw, 5.3rem); text-shadow: 3px 3px 0 var(--hot), 6px 6px 0 var(--ink); }
   .pair-lab-footnote { right: 20px; bottom: 5%; left: 20px; max-width: none; font-size: 0.67rem; line-height: 1.4; text-align: center; }
   .gallery-heading { top: 92px; }
   .gallery-heading h2 { font-size: 4rem; text-shadow: 4px 4px 0 var(--hot), 7px 7px 0 var(--ink); }
@@ -1274,7 +1269,7 @@ html.is-intro-locked .site-header {
   .gallery-card figcaption strong { font-size: 1.2rem; letter-spacing: 0.035em; }
   .finale { min-height: max(840px, 100dvh); padding: 330px 18px 30px; }
   .finale-sun { top: -360px; width: 560px; }
-  .finale h2 { font-size: 25vw; text-shadow: 4px 4px 0 var(--sun), 8px 8px 0 var(--ink); -webkit-text-stroke: 2px var(--ink); }
+  .finale h2 { font-size: 25vw; text-shadow: 4px 4px 0 var(--sun), 8px 8px 0 var(--ink); }
   .finale-actions { gap: 10px; margin-top: 30px; }
   .finale-actions a { padding: 14px 18px; font-size: 0.88rem; }
   .finale > img { width: min(76vw, 300px); margin-top: clamp(82px, 12svh, 110px); }
