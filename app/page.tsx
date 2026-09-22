@@ -877,7 +877,7 @@ export default function Home() {
             <h2>METEORA MADE THE POOLS.<br />NATURE MADE THE PAIR.<br /><em>WE JUST <span>DEPLOYED&nbsp;IT.</span></em></h2>
             <div className="about-note">
               <p>One of the first coins to hit Ember. Paired directly with $MET. Powered by the only liquidity pair that already had gravity.</p>
-              <small>*it is not serious at all</small>
+              <small>*it was never that serious</small>
             </div>
           </div>
           <div className="about-badges" aria-hidden="true">
