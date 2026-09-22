@@ -882,7 +882,7 @@ export default function Home() {
           </div>
           <div className="about-badges" aria-hidden="true">
             <span className="spin-sticker">100%<br />LIQUID</span>
-            <span>SOLANA<br />SUMMER</span>
+            <span>0%<br />SUBTLE</span>
           </div>
         </div>
       </section>
