@@ -876,7 +876,7 @@ export default function Home() {
             <p className="eyebrow">A VERY SERIOUS CRYPTO PROJECT*</p>
             <h2>METEORA MADE THE POOLS.<br />NATURE MADE THE PAIR.<br /><em>WE JUST <span>DEPLOYED&nbsp;IT.</span></em></h2>
             <div className="about-note">
-              <p>One of the first coins to hit Ember. Paired directly with $MET. Powered by the biggest pair of liquidity on chain.</p>
+              <p>One of the first coins to hit Ember. Paired directly with $MET. Powered by the only liquidity pair that already had gravity.</p>
               <small>*it is not serious at all</small>
             </div>
           </div>
