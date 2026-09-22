@@ -893,7 +893,7 @@ export default function Home() {
             {Array.from({ length: 14 }, (_, index) => <i key={`lab-star-${index}`} />)}
           </div>
           <div className="pair-lab-heading lab-copy-before">
-            <p>THE PAIRING RITUAL</p>
+            <p>THE PAIRING WAS THE RITUAL</p>
             <h2 id="pair-lab-title">LIQUIDITY<br /><em>HAS GRAVITY.</em></h2>
           </div>
           <div className="pair-lab-field" aria-hidden="true">
