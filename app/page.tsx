@@ -932,7 +932,7 @@ export default function Home() {
       <section id="gallery" ref={gallerySection} className="gallery-scroll">
         <div className="gallery-stage">
           <div className="gallery-heading">
-            <p>THE LIQUIDITY LOOKBOOK</p>
+            <p>THE LOOKBOOK IS THE LORE</p>
             <h2>PAIR-O-RAMA</h2>
           </div>
           <div className="gallery-deck">
@@ -957,7 +957,7 @@ export default function Home() {
       <section className="finale">
         <div className="finale-sun" />
         <p>ENOUGH LOOKING.</p>
-        <h2>GET LIQUID.</h2>
+        <h2>GET IN THE PAIR.</h2>
         <div className="finale-actions">
           <a href={DEX_URL} target="_blank" rel="noreferrer">VIEW THE PAIR ↗</a>
           <a href={X_URL} target="_blank" rel="noreferrer">STALK US ON X ↗</a>
