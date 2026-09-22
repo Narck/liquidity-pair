@@ -920,7 +920,7 @@ export default function Home() {
             </div>
           </div>
           <div className="pair-lab-result-copy lab-copy-after">
-            <span>PERFECTLY PAIRED</span>
+            <span>NATURALLY PAIRED</span>
             <strong>MET FOUND<br />ITS MATCH.</strong>
             <small>LP × MET · ON SOLANA</small>
           </div>
