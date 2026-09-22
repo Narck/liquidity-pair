@@ -924,8 +924,8 @@ export default function Home() {
             <strong>MET FOUND<br />ITS MATCH.</strong>
             <small>LP × MET · ON SOLANA</small>
           </div>
-          <p className="pair-lab-footnote lab-copy-before">TWO ASSETS. ONE VERY UNSERIOUS POSITION.</p>
-          <div className="pair-lab-scroll lab-copy-before" aria-hidden="true">KEEP PAIRING <i>↓</i></div>
+          <p className="pair-lab-footnote lab-copy-before">TWO ASSETS. ONE POSITION. NO REASON TO UNPAIR.</p>
+          <div className="pair-lab-scroll lab-copy-before" aria-hidden="true">KEEP THEM PAIRED <i>↓</i></div>
         </div>
       </section>
 
