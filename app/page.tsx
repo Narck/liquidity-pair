@@ -8,7 +8,7 @@ import HeroRipple from "./HeroRipple";
 
 const CONTRACT = "8CECyxU5dTBwvzYXDcvzkgQ3qV8nsxXDrST396isn4Tu";
 const DEX_URL = "https://dexscreener.com/solana/xZJTKthDmRx2H7fHp5FTeuv9V8vVrpYZkToa5sCmAXV";
-const X_URL = "https://x.com/LiqPairMET";
+const X_URL = "https://x.com/LiquidityPairs";
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const asset = (path: string) => `${BASE_PATH}${path}`;
 
