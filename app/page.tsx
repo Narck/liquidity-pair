@@ -863,8 +863,8 @@ export default function Home() {
       <section id="about" className="about">
         <div className="ticker" aria-hidden="true">
           <div>
-            <span>LIQUIDITY PAIR ★ </span><span>BUILT DIFFERENT ★ </span><span>LP × MET ★ </span>
-            <span>LIQUIDITY PAIR ★ </span><span>BUILT DIFFERENT ★ </span><span>LP × MET ★ </span>
+            <span>LIQUIDITY PAIR ★ </span><span>NATURALLY PAIRED ★ </span><span>LP × MET ★ </span>
+            <span>LIQUIDITY PAIR ★ </span><span>NATURALLY PAIRED ★ </span><span>LP × MET ★ </span>
           </div>
         </div>
         <div className="about-grid">
