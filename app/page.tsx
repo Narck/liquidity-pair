@@ -831,8 +831,8 @@ export default function Home() {
         </div>
         <div className="hero-ticket hero-reveal">
           <span>ONE OF THE FIRST</span>
-          <strong>EMBER DEPLOYS</strong>
-          <small>PAIRED WITH $MET</small>
+          <strong>EMBER DEPLOYS.</strong>
+          <small>THE PAIR CAME PRE-ASSEMBLED.</small>
         </div>
         <a className="hero-cta hero-reveal" href={DEX_URL} target="_blank" rel="noreferrer">
           GET IN<br />THE POOL <span>↗</span>
