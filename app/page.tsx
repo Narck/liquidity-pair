@@ -826,8 +826,8 @@ export default function Home() {
         />
         <div className="hero-shade" />
         <div className="hero-sticker hero-reveal">
-          <span>NO LORE</span>
-          <strong><span>JUST</span><span>LIQUIDITY</span></strong>
+          <span>NO<br />WHITEPAPER.</span>
+          <strong><span>JUST A</span><span>PAIR.</span></strong>
         </div>
         <div className="hero-ticket hero-reveal">
           <span>ONE OF THE FIRST</span>
@@ -874,7 +874,7 @@ export default function Home() {
           </div>
           <div className="about-copy">
             <p className="eyebrow">A VERY SERIOUS CRYPTO PROJECT*</p>
-            <h2>METEORA MADE THE POOLS.<br />NATURE MADE THE PAIR.<br /><em>WE JUST DEPLOYED IT.</em></h2>
+            <h2>METEORA MADE THE POOLS.<br />NATURE MADE THE PAIR.<br /><em>WE JUST <span>DEPLOYED&nbsp;IT.</span></em></h2>
             <div className="about-note">
               <p>One of the first coins to hit Ember. Paired directly with $MET. Powered by the biggest pair of liquidity on chain.</p>
               <small>*it is not serious at all</small>

@@ -481,7 +481,7 @@ html.is-intro-locked .site-header {
   text-align: center;
 }
 
-.hero-sticker > span { font-size: clamp(0.85rem, 1vw, 1rem); font-weight: 700; letter-spacing: 0.15em; }
+.hero-sticker > span { font-size: clamp(0.75rem, 1vw, 1rem); font-weight: 700; line-height: 1.1; letter-spacing: 0.1em; }
 .hero-sticker strong {
   display: flex;
   width: 86%;
@@ -497,7 +497,7 @@ html.is-intro-locked .site-header {
 }
 
 .hero-sticker strong span { font: inherit; line-height: inherit; letter-spacing: inherit; }
-.hero-sticker strong span:last-child { font-size: 0.88em; letter-spacing: 0.005em; }
+.hero-sticker strong span:last-child { font-size: 1.1em; }
 
 .hero-ticket {
   right: 4.5%;
@@ -688,6 +688,8 @@ html.is-intro-locked .site-header {
   font-style: normal;
   text-shadow: 5px 5px 0 var(--hot);
 }
+
+.about-copy h2 em span { white-space: nowrap; }
 
 .about-note {
   display: grid;
@@ -1283,7 +1285,7 @@ html.is-intro-locked .site-header {
   .intro-wordmark { width: 94vw; }
   .about-grid { padding: 80px 22px; }
   .about-copy h2 { font-size: clamp(3.2rem, 16.3vw, 6.1rem); line-height: 0.78; }
-  .about-copy h2 em { text-shadow: 3px 3px 0 var(--hot); }
+  .about-copy h2 em { font-size: 0.92em; text-shadow: 3px 3px 0 var(--hot); }
   .about-note { grid-template-columns: 1fr; margin-top: 36px; }
   .about-badges span { width: 118px; }
   .pair-lab { height: 320dvh; }
