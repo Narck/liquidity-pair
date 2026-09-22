@@ -1282,7 +1282,7 @@ html.is-intro-locked .site-header {
   .bubble-two { left: 5%; bottom: 11%; font-size: 1.1rem; }
   .intro-wordmark { width: 94vw; }
   .about-grid { padding: 80px 22px; }
-  .about-copy h2 { font-size: clamp(3.65rem, 17.6vw, 6.6rem); line-height: 0.78; }
+  .about-copy h2 { font-size: clamp(3.2rem, 16.3vw, 6.1rem); line-height: 0.78; }
   .about-copy h2 em { text-shadow: 3px 3px 0 var(--hot); }
   .about-note { grid-template-columns: 1fr; margin-top: 36px; }
   .about-badges span { width: 118px; }
