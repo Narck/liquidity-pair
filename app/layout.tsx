@@ -9,7 +9,7 @@ import "./globals.css";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export const metadata: Metadata = {
-  title: "Liquidity Pair — LP / MET",
+  title: "Liquidity Pair — LPxMET",
   description: "Liquidity Pair: one of the first Ember deploys, paired with Meteora's MET token on Solana.",
   icons: {
     icon: `${basePath}/brand/lp-pfp.webp`,
