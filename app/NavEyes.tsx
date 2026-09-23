@@ -39,6 +39,9 @@ export default function NavEyes() {
     let pointerY: number | null = null;
     let lastTime = 0;
     let fallStart = 0;
+    let entranceTimer = 0;
+    let entranceAnimation: Animation | null = null;
+    let shellAnimations: Animation[] = [];
 
     const measure = () => {
       for (const eye of eyes) {
@@ -141,27 +144,54 @@ export default function NavEyes() {
       requestTick();
     };
 
-    const handleEnter = (event: PointerEvent) => {
-      if (event.pointerType !== "touch") drop();
+    const shake = () => {
+      shellAnimations.forEach((animation) => animation.cancel());
+      shellAnimations = eyes.map((eye, index) => {
+        const direction = index === 0 ? 1 : -1;
+        return eye.shell.animate([
+          { offset: 0, translate: "0 0", rotate: "0deg", scale: "1 1" },
+          { offset: 0.12, translate: `${-3 * direction}px 6px`, rotate: `${-8 * direction}deg`, scale: "1.11 .83" },
+          { offset: 0.29, translate: `${7 * direction}px -8px`, rotate: `${12 * direction}deg`, scale: ".9 1.12" },
+          { offset: 0.47, translate: `${-5 * direction}px 4px`, rotate: `${-8 * direction}deg`, scale: "1.07 .92" },
+          { offset: 0.65, translate: `${3 * direction}px -3px`, rotate: `${5 * direction}deg`, scale: ".97 1.04" },
+          { offset: 0.82, translate: `${-1 * direction}px 1px`, rotate: `${-2 * direction}deg`, scale: "1.02 .99" },
+          { offset: 1, translate: "0 0", rotate: "0deg", scale: "1 1" },
+        ], { duration: 900, delay: index * 65, easing: "ease-out" });
+      });
+      drop();
     };
-    const handleDown = (event: PointerEvent) => {
-      if (event.pointerType === "touch") drop();
+
+    const enter = () => {
+      if (button.classList.contains("is-ready")) return;
+      if (reducedMotion.matches) {
+        button.classList.add("is-ready");
+        return;
+      }
+      entranceAnimation = button.animate([
+        { offset: 0, opacity: 0, translate: "0 -105px", scale: ".86 1.12" },
+        { offset: 0.61, opacity: 1, translate: "0 5px", scale: "1.08 .88" },
+        { offset: 0.78, opacity: 1, translate: "0 -8px", scale: ".97 1.04" },
+        { offset: 1, opacity: 1, translate: "0 0", scale: "1 1" },
+      ], { duration: 820, easing: "ease-out" });
+      button.classList.add("is-ready");
+      entranceTimer = window.setTimeout(shake, 500);
     };
 
     measure();
     window.addEventListener("resize", measure);
     window.addEventListener("pointermove", handleMove, { passive: true });
-    button.addEventListener("pointerenter", handleEnter);
-    button.addEventListener("pointerdown", handleDown);
-    button.addEventListener("click", drop);
+    window.addEventListener("liquidity-intro-complete", enter);
+    button.addEventListener("click", shake);
 
     return () => {
       if (frame) cancelAnimationFrame(frame);
+      window.clearTimeout(entranceTimer);
+      entranceAnimation?.cancel();
+      shellAnimations.forEach((animation) => animation.cancel());
       window.removeEventListener("resize", measure);
       window.removeEventListener("pointermove", handleMove);
-      button.removeEventListener("pointerenter", handleEnter);
-      button.removeEventListener("pointerdown", handleDown);
-      button.removeEventListener("click", drop);
+      window.removeEventListener("liquidity-intro-complete", enter);
+      button.removeEventListener("click", shake);
     };
   }, []);
 

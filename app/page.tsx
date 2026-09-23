@@ -108,6 +108,7 @@ export default function Home() {
         onComplete: () => {
           if (intro.current) intro.current.style.display = "none";
           unlockPageScroll();
+          window.dispatchEvent(new Event("liquidity-intro-complete"));
         },
       });
 

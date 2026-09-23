@@ -435,8 +435,12 @@ html.is-intro-locked .site-header {
   border: 0;
   background: transparent;
   cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
   touch-action: manipulation;
 }
+
+.nav-eyes.is-ready { opacity: 1; visibility: visible; }
 
 .nav-eyes:focus-visible { outline: 2px solid var(--sun); outline-offset: 3px; border-radius: 999px; }
 
