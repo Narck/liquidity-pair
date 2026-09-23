@@ -969,8 +969,10 @@ export default function Home() {
       </section>
 
       <section className="finale">
-        <div className="finale-sun finale-sun-small" aria-hidden="true" />
-        <div className="finale-sun finale-sun-large" aria-hidden="true" />
+        <div className="finale-suns" aria-hidden="true">
+          <div className="finale-sun finale-sun-small" />
+          <div className="finale-sun finale-sun-large" />
+        </div>
         <p>ENOUGH LOOKING.</p>
         <h2>GET IN THE PAIR.</h2>
         <div className="finale-actions">

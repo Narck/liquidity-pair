@@ -1179,6 +1179,9 @@ html.is-intro-locked .site-header {
 }
 
 .finale {
+  --sun-pink: clamp(12px, 2.2vw, 38px);
+  --sun-violet: clamp(20px, 4.5vw, 78px);
+  --sun-size: min(690px, calc(50vw - var(--sun-violet) - var(--sun-violet) - 24px));
   position: relative;
   display: flex;
   min-height: max(760px, 100svh);
@@ -1192,26 +1195,36 @@ html.is-intro-locked .site-header {
   text-align: center;
 }
 
-.finale-sun {
+.finale-suns {
   position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
   z-index: 0;
-  width: min(72vw, 900px);
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--sun-violet) + var(--sun-violet) + 16px);
+  pointer-events: none;
+}
+
+.finale-sun {
+  position: relative;
+  flex: none;
+  width: var(--sun-size);
   aspect-ratio: 1;
-  transform: translateX(-50%) translateY(var(--sun-entrance, 0px));
+  transform: translateY(var(--sun-entrance, 0px));
   border: 5px solid var(--ink);
   border-radius: 50%;
   background: var(--sun);
-  box-shadow: 0 0 0 38px var(--hot), 0 0 0 78px var(--violet);
+  box-shadow: 0 0 0 var(--sun-pink) var(--hot), 0 0 0 var(--sun-violet) var(--violet);
 }
 
 .finale-sun-small {
-  top: calc(clamp(-680px, -50vw, -420px) - 75px);
-  left: 16%;
+  top: calc(clamp(40px, 6vw, 105px) - var(--sun-size));
 }
 
 .finale-sun-large {
-  top: clamp(-680px, -50vw, -420px);
-  left: 84%;
+  top: calc(clamp(70px, 10vw, 170px) - var(--sun-size));
 }
 
 .finale > p { position: relative; z-index: 2; margin: 0 0 12px; font-size: 1rem; font-weight: 700; letter-spacing: 0.16em; }
@@ -1321,9 +1334,6 @@ html.is-intro-locked .site-header {
   .gallery-card figcaption { right: 8px; bottom: 8px; left: 8px; padding: 8px 10px; }
   .gallery-card figcaption strong { font-size: 1.2rem; letter-spacing: 0.035em; }
   .finale { min-height: max(840px, 100dvh); padding: 330px 18px 30px; }
-  .finale-sun { width: 62vw; box-shadow: 0 0 0 18px var(--hot), 0 0 0 36px var(--violet); }
-  .finale-sun-small { top: -170px; left: 23%; }
-  .finale-sun-large { top: -135px; left: 77%; }
   .finale h2 { font-size: 25vw; text-shadow: 4px 4px 0 var(--sun), 8px 8px 0 var(--ink); }
   .finale-actions { gap: 10px; margin-top: 30px; }
   .finale-actions a { padding: 14px 18px; font-size: 0.88rem; }
