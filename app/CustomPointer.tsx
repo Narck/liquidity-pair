@@ -36,12 +36,14 @@ export default function CustomPointer() {
       x = event.clientX;
       y = event.clientY;
       pointer.classList.add("is-visible");
-      const overEyes = event.target instanceof Element && Boolean(event.target.closest(".nav-eyes"));
-      const nextLabel = overEyes ? "JIGGLE IT" : "GO!";
+      const target = event.target instanceof Element ? event.target : null;
+      const nextLabel = target?.closest(".nav-eyes")
+        ? "JIGGLE IT"
+        : target?.closest(".contract-pill") ? "COPY" : "GO!";
       if (label.textContent !== nextLabel) label.textContent = nextLabel;
       pointer.classList.toggle(
         "is-interactive",
-        event.target instanceof Element && Boolean(event.target.closest(INTERACTIVE_SELECTOR)),
+        Boolean(target?.closest(INTERACTIVE_SELECTOR)),
       );
       if (!frame) frame = requestAnimationFrame(paint);
     };
