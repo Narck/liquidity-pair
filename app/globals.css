@@ -674,7 +674,7 @@ html.is-intro-locked .site-header {
 
 .scroll-cue i { width: 2px; height: 44px; background: linear-gradient(var(--cream), transparent); }
 
-.about { position: relative; background: var(--sun); color: var(--ink); }
+.about { position: relative; overflow: clip; background: var(--sun); color: var(--ink); }
 
 .ticker {
   overflow: hidden;
@@ -753,9 +753,25 @@ html.is-intro-locked .site-header {
 }
 
 .about-note p { margin: 0; font-size: clamp(1.08rem, 1.5vw, 1.35rem); font-weight: 600; line-height: 1.45; }
-.about-note small { font-size: 0.78rem; font-weight: 700; transform: rotate(-5deg); }
+.gravity-word { position: relative; display: inline-block; white-space: nowrap; }
+.gravity-orb {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  width: clamp(56px, 6vw, 90px);
+  aspect-ratio: 1;
+  translate: -50% 0;
+  border: 4px solid var(--ink);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 25%, var(--cream) 0 9%, var(--aqua) 12% 38%, var(--violet) 100%);
+  box-shadow: 6px 7px 0 var(--hot), 10px 11px 0 var(--ink);
+  pointer-events: none;
+  visibility: hidden;
+  will-change: transform;
+}
+.about-note small { position: relative; z-index: 1; font-size: 0.78rem; font-weight: 700; transform: rotate(-5deg); }
 
-.about-badges { display: flex; height: 70%; flex-direction: column; align-items: center; justify-content: space-around; }
+.about-badges { position: relative; z-index: 1; display: flex; height: 70%; flex-direction: column; align-items: center; justify-content: space-around; }
 
 .about-badges span {
   display: grid;
@@ -1439,6 +1455,7 @@ html.is-intro-locked .site-header {
   }
 
   .pair-lab { height: auto; }
+  .gravity-orb { display: none; }
   .pair-lab-stage { position: relative; min-height: max(760px, 100svh); }
   .lab-token, .lab-impact { display: none; }
   .lab-orbit-rings { transform: none !important; opacity: 0.45; }

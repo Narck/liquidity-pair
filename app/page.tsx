@@ -715,6 +715,36 @@ export default function Home() {
           ".finale-actions",
         ]);
 
+        const gravityWord = document.querySelector<HTMLElement>(".gravity-word");
+        const gravityOrb = document.querySelector<HTMLElement>(".gravity-orb");
+        const aboutSection = document.querySelector<HTMLElement>(".about");
+        if (gravityWord && gravityOrb && aboutSection) {
+          const gravityFall = gsap.timeline({ paused: true })
+            .fromTo(gravityOrb,
+              { autoAlpha: 0, scale: 0.35, y: -10, rotate: -18 },
+              { autoAlpha: 1, scale: 1, y: 0, rotate: 0, duration: 0.18, ease: "back.out(2)" },
+            )
+            .to(gravityOrb, {
+              y: () => Math.max(
+                gravityOrb.offsetHeight + 32,
+                aboutSection.getBoundingClientRect().bottom
+                  - gravityWord.getBoundingClientRect().bottom
+                  + gravityOrb.offsetHeight + 24,
+              ),
+              rotate: 165,
+              scale: 0.88,
+              duration: 1.05,
+              ease: "power3.in",
+            }, "+=0.02");
+
+          ScrollTrigger.create({
+            trigger: gravityWord,
+            start: "top 72%",
+            onEnter: () => gravityFall.invalidate().restart(),
+            onLeaveBack: () => gravityFall.pause(0),
+          });
+        }
+
         gsap.fromTo(".finale-sun",
           { "--sun-entrance": "-110px" },
           {
@@ -893,7 +923,7 @@ export default function Home() {
             <p className="eyebrow">A VERY SERIOUS CRYPTO PROJECT*</p>
             <h2>METEORA MADE THE POOLS.<br />NATURE MADE THE PAIR.<br /><em>WE JUST <span>DEPLOYED&nbsp;IT.</span></em></h2>
             <div className="about-note">
-              <p>One of the first coins to hit Ember. Paired directly with $MET. Powered by the only liquidity pair that already had gravity.</p>
+              <p>One of the first coins to hit Ember. Paired directly with $MET. Powered by the only liquidity pair that already had <span className="gravity-word">gravity.<span className="gravity-orb" aria-hidden="true" /></span></p>
               <small>*it was never that serious</small>
             </div>
           </div>
