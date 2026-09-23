@@ -1191,7 +1191,7 @@ html.is-intro-locked .site-header {
   align-items: center;
   justify-content: flex-start;
   overflow: hidden;
-  padding: clamp(260px, 32svh, 340px) 24px clamp(30px, 4svh, 52px);
+  padding: clamp(205px, 27svh, 285px) 24px clamp(30px, 4svh, 52px);
   background: var(--aqua);
   color: var(--ink);
   text-align: center;
@@ -1335,7 +1335,7 @@ html.is-intro-locked .site-header {
   .gallery-card, .gallery-deck::before, .gallery-deck::after { border-radius: 20px; }
   .gallery-card figcaption { right: 8px; bottom: 8px; left: 8px; padding: 8px 10px; }
   .gallery-card figcaption strong { font-size: 1.2rem; letter-spacing: 0.035em; }
-  .finale { --sun-reveal-small: 30px; --sun-reveal-large: 42px; min-height: max(840px, 100dvh); padding: 190px 18px 30px; }
+  .finale { --sun-reveal-small: 30px; --sun-reveal-large: 42px; min-height: max(840px, 100dvh); padding: 145px 18px 30px; }
   .finale h2 { font-size: 25vw; text-shadow: 4px 4px 0 var(--sun), 8px 8px 0 var(--ink); }
   .finale-actions { gap: 10px; margin-top: 30px; }
   .finale-actions a { padding: 14px 18px; font-size: 0.88rem; }
