@@ -713,6 +713,20 @@ export default function Home() {
           ".finale-actions",
         ]);
 
+        gsap.fromTo(".finale-sun",
+          { "--sun-entrance": "-110px" },
+          {
+            "--sun-entrance": "0px",
+            ease: "none",
+            scrollTrigger: {
+              trigger: ".finale",
+              start: "top 85%",
+              end: "top 15%",
+              scrub: 0.8,
+            },
+          },
+        );
+
         gsap.fromTo(".finale-logo",
           {
             autoAlpha: 0,
