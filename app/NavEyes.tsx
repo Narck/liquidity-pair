@@ -177,11 +177,15 @@ export default function NavEyes() {
       entranceTimer = window.setTimeout(shake, 500);
     };
 
+    const handlePageClick = () => {
+      if (button.classList.contains("is-ready")) shake();
+    };
+
     measure();
     window.addEventListener("resize", measure);
     window.addEventListener("pointermove", handleMove, { passive: true });
     window.addEventListener("liquidity-intro-complete", enter);
-    button.addEventListener("click", shake);
+    window.addEventListener("click", handlePageClick);
 
     return () => {
       if (frame) cancelAnimationFrame(frame);
@@ -191,7 +195,7 @@ export default function NavEyes() {
       window.removeEventListener("resize", measure);
       window.removeEventListener("pointermove", handleMove);
       window.removeEventListener("liquidity-intro-complete", enter);
-      button.removeEventListener("click", shake);
+      window.removeEventListener("click", handlePageClick);
     };
   }, []);
 
