@@ -1195,15 +1195,24 @@ html.is-intro-locked .site-header {
 .finale-sun {
   position: absolute;
   z-index: 0;
-  top: clamp(-680px, -50vw, -420px);
-  left: 50%;
-  width: min(72vw, 900px);
   aspect-ratio: 1;
   transform: translateX(-50%);
   border: 5px solid var(--ink);
   border-radius: 50%;
   background: var(--sun);
   box-shadow: 0 0 0 38px var(--hot), 0 0 0 78px var(--violet);
+}
+
+.finale-sun-small {
+  top: clamp(-530px, -38vw, -320px);
+  left: 22%;
+  width: min(55vw, 690px);
+}
+
+.finale-sun-large {
+  top: clamp(-680px, -50vw, -420px);
+  left: 78%;
+  width: min(72vw, 900px);
 }
 
 .finale > p { position: relative; z-index: 2; margin: 0 0 12px; font-size: 1rem; font-weight: 700; letter-spacing: 0.16em; }
@@ -1313,7 +1322,9 @@ html.is-intro-locked .site-header {
   .gallery-card figcaption { right: 8px; bottom: 8px; left: 8px; padding: 8px 10px; }
   .gallery-card figcaption strong { font-size: 1.2rem; letter-spacing: 0.035em; }
   .finale { min-height: max(840px, 100dvh); padding: 330px 18px 30px; }
-  .finale-sun { top: -360px; width: 560px; }
+  .finale-sun { box-shadow: 0 0 0 20px var(--hot), 0 0 0 40px var(--violet); }
+  .finale-sun-small { top: -46px; left: 22%; width: 44vw; }
+  .finale-sun-large { top: -50px; left: 78%; width: 58vw; }
   .finale h2 { font-size: 25vw; text-shadow: 4px 4px 0 var(--sun), 8px 8px 0 var(--ink); }
   .finale-actions { gap: 10px; margin-top: 30px; }
   .finale-actions a { padding: 14px 18px; font-size: 0.88rem; }
