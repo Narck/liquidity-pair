@@ -42,17 +42,17 @@ html.is-intro-locked::-webkit-scrollbar {
   min-height: 64px;
   border: 3px solid var(--ink);
   border-radius: 999px;
-  background: linear-gradient(180deg, #14f195 0%, var(--aqua) 24%, #9945ff 52%, var(--hot) 74%, var(--orange) 100%);
+  background: linear-gradient(180deg, #9945ff 0%, var(--orange) 100%);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #55ffc0 0%, #55fff5 24%, #b274ff 52%, #ff66bd 74%, #ff8a50 100%);
+  background: linear-gradient(180deg, #b274ff 0%, #ff8a50 100%);
 }
 ::-webkit-scrollbar-corner { background: var(--ink); }
 
 @supports not selector(::-webkit-scrollbar) {
   html {
     scrollbar-width: thin;
-    scrollbar-color: var(--aqua) var(--ink);
+    scrollbar-color: #9945ff var(--ink);
   }
 
   html.is-intro-locked {
@@ -1258,7 +1258,7 @@ html.is-intro-locked .site-header {
   z-index: 0;
   display: flex;
   justify-content: center;
-  gap: calc(var(--sun-violet) + var(--sun-violet) + 16px);
+  gap: clamp(30px, calc(3vw - 6px), 40px);
   pointer-events: none;
 }
 
@@ -1397,7 +1397,8 @@ html.is-intro-locked .site-header {
   .gallery-card, .gallery-deck::before, .gallery-deck::after { border-radius: 20px; }
   .gallery-card figcaption { right: 8px; bottom: 8px; left: 8px; padding: 8px 10px; }
   .gallery-card figcaption strong { font-size: 1.2rem; letter-spacing: 0.035em; }
-  .finale { --sun-reveal-small: 30px; --sun-reveal-large: 42px; min-height: max(840px, 100dvh); padding: 145px 18px 30px; }
+  .finale { --sun-reveal-small: clamp(25px, 8vw, 48px); --sun-reveal-large: clamp(35px, 11vw, 66px); min-height: max(840px, 100dvh); padding: 145px 18px 30px; }
+  .finale-suns { gap: 40px; }
   .finale h2 { font-size: 25vw; text-shadow: 4px 4px 0 var(--sun), 8px 8px 0 var(--ink); }
   .finale-actions { gap: 10px; margin-top: 30px; }
   .finale-actions a { padding: 14px 18px; font-size: 0.88rem; }

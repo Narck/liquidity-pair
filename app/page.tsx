@@ -723,7 +723,7 @@ export default function Home() {
             scrollTrigger: {
               trigger: ".finale",
               start: "top 85%",
-              end: "top 15%",
+              end: "top 40%",
               scrub: 0.8,
             },
           },
