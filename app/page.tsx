@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CustomPointer from "./CustomPointer";
+import NavEyes from "./NavEyes";
 import HeroRipple from "./HeroRipple";
 
 const CONTRACT = "8CECyxU5dTBwvzYXDcvzkgQ3qV8nsxXDrST396isn4Tu";
@@ -820,6 +821,7 @@ export default function Home() {
             </div>
           </div>
         </a>
+        <NavEyes />
         <nav aria-label="Primary navigation">
           <a href="#about">THE LORE</a>
           <a href="#gallery">THE LIQUIDITY</a>
