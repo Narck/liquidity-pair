@@ -754,9 +754,20 @@ html.is-intro-locked .site-header {
 
 .about-note p { margin: 0; font-size: clamp(1.08rem, 1.5vw, 1.35rem); font-weight: 600; line-height: 1.45; }
 .gravity-word { position: relative; display: inline-block; white-space: nowrap; }
+.gravity-underline {
+  position: absolute;
+  top: calc(100% - 1px);
+  left: -5%;
+  width: 110%;
+  height: 12px;
+  overflow: visible;
+  transform: rotate(-2deg);
+  pointer-events: none;
+}
+.gravity-underline path { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .gravity-orb {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 19px);
   left: 50%;
   width: clamp(56px, 6vw, 90px);
   aspect-ratio: 1;

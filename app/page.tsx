@@ -923,7 +923,7 @@ export default function Home() {
             <p className="eyebrow">A VERY SERIOUS CRYPTO PROJECT*</p>
             <h2>METEORA MADE THE POOLS.<br />NATURE MADE THE PAIR.<br /><em>WE JUST <span>DEPLOYED&nbsp;IT.</span></em></h2>
             <div className="about-note">
-              <p>One of the first coins to hit Ember. Paired directly with $MET. Powered by the only liquidity pair that already had <span className="gravity-word">gravity.<span className="gravity-orb" aria-hidden="true" /></span></p>
+              <p>One of the first coins to hit Ember. Paired directly with $MET. Powered by the only liquidity pair that already had <span className="gravity-word">gravity.<svg className="gravity-underline" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9 C16 8 25 4 38 7 C50 10 61 4 74 5 C89 7 101 3 118 6" /></svg><span className="gravity-orb" aria-hidden="true" /></span></p>
               <small>*it was never that serious</small>
             </div>
           </div>
