@@ -18,8 +18,9 @@ export default function CustomPointer() {
 
   useEffect(() => {
     const pointer = pointerRef.current;
+    const label = pointer?.querySelector<HTMLSpanElement>(".custom-pointer-label");
     const finePointer = window.matchMedia("(pointer: fine) and (prefers-reduced-motion: no-preference)");
-    if (!pointer || !finePointer.matches) return;
+    if (!pointer || !label || !finePointer.matches) return;
 
     let frame = 0;
     let x = -100;
@@ -35,6 +36,9 @@ export default function CustomPointer() {
       x = event.clientX;
       y = event.clientY;
       pointer.classList.add("is-visible");
+      const overEyes = event.target instanceof Element && Boolean(event.target.closest(".nav-eyes"));
+      const nextLabel = overEyes ? "JIGGLE IT" : "GO!";
+      if (label.textContent !== nextLabel) label.textContent = nextLabel;
       pointer.classList.toggle(
         "is-interactive",
         event.target instanceof Element && Boolean(event.target.closest(INTERACTIVE_SELECTOR)),
@@ -46,6 +50,7 @@ export default function CustomPointer() {
     const handlePointerUp = () => pointer.classList.remove("is-pressed");
     const hidePointer = () => {
       pointer.classList.remove("is-visible", "is-interactive", "is-pressed");
+      label.textContent = "GO!";
     };
 
     document.documentElement.classList.add("has-custom-pointer");
