@@ -1069,6 +1069,91 @@ html.is-intro-locked .site-header {
 }
 .pair-lab-scroll i { color: var(--sun); font-family: "Teko", Impact, sans-serif; font-size: 2rem; font-style: normal; }
 
+.pair-drop {
+  position: relative;
+  z-index: 1;
+  padding: clamp(78px, 9vw, 130px) clamp(20px, 6vw, 96px) clamp(88px, 9vw, 132px);
+  overflow: hidden;
+  background: var(--aqua);
+  color: var(--ink);
+}
+
+.pair-drop::before,
+.pair-drop::after {
+  content: "✦";
+  position: absolute;
+  color: var(--sun);
+  font-size: clamp(8rem, 18vw, 20rem);
+  line-height: 1;
+  -webkit-text-stroke: 4px var(--ink);
+  pointer-events: none;
+}
+
+.pair-drop::before { top: -90px; right: -45px; transform: rotate(18deg); }
+.pair-drop::after { bottom: -100px; left: -35px; color: var(--hot); transform: rotate(-17deg); }
+
+.pair-drop-header,
+.pair-drop-game { position: relative; z-index: 1; max-width: 1150px; margin-inline: auto; }
+
+.pair-drop-header { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 34px; }
+.pair-drop-eyebrow { margin: 0 0 10px; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.15em; }
+.pair-drop h2 { margin: 0; font-family: "Teko", Impact, sans-serif; font-size: clamp(5.3rem, 11vw, 11rem); line-height: 0.72; letter-spacing: 0.012em; }
+.pair-drop h2 em { color: var(--hot); font-style: normal; text-shadow: 5px 5px 0 var(--sun), 9px 9px 0 var(--ink); }
+.pair-drop-intro { margin: 20px 0 0; font-size: clamp(0.95rem, 1.4vw, 1.18rem); font-weight: 700; }
+.pair-drop-score { display: grid; flex: none; min-width: 104px; gap: 2px; padding: 15px 17px 10px; transform: rotate(6deg); border: 3px solid var(--ink); border-radius: 18px; background: var(--sun); box-shadow: 6px 7px 0 var(--ink); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-align: center; }
+.pair-drop-score strong { font-family: "Teko", Impact, sans-serif; font-size: 3.3rem; line-height: 0.8; letter-spacing: 0; }
+.pair-drop-score small { margin-left: 3px; font-family: "Sora", system-ui, sans-serif; font-size: 0.65rem; vertical-align: middle; }
+
+.pair-drop-game { overflow: hidden; border: 4px solid var(--ink); border-radius: 28px; background: var(--cream); box-shadow: 12px 14px 0 var(--ink); }
+.pair-drop-stage { position: relative; height: clamp(380px, 43vw, 540px); overflow: hidden; outline: none; background: radial-gradient(circle at 50% 70%, #6231ab 0, var(--purple) 52%, #1b0a37 100%); color: var(--cream); touch-action: pan-y; user-select: none; }
+.pair-drop-stage:focus-visible { outline: 5px solid var(--sun); outline-offset: -9px; }
+.pair-drop-stage::before { content: ""; position: absolute; inset: 0; opacity: 0.6; background-image: radial-gradient(circle, var(--cream) 1px, transparent 2px); background-size: 94px 78px; background-position: 20px 13px; pointer-events: none; }
+.pair-drop-stage-label { position: absolute; top: 22px; left: 26px; z-index: 2; color: var(--aqua); font-size: 0.73rem; font-weight: 800; letter-spacing: 0.17em; pointer-events: none; }
+.pair-drop-target-label { position: absolute; top: 22px; right: 26px; z-index: 2; color: var(--sun); font-size: 0.73rem; font-weight: 800; letter-spacing: 0.17em; pointer-events: none; }
+.pair-drop-token { position: absolute; z-index: 8; top: 0; left: 0; display: grid; width: clamp(58px, 7vw, 76px); aspect-ratio: 1; place-items: center; border: 4px solid var(--ink); border-radius: 50%; background: var(--aqua); will-change: transform; pointer-events: none; }
+.pair-drop-token span { font-family: "Teko", Impact, sans-serif; font-size: clamp(2.65rem, 4vw, 3.7rem); font-weight: 700; line-height: 0.8; }
+.pair-drop-peg { position: absolute; z-index: 3; display: grid; width: clamp(44px, 5vw, 62px); aspect-ratio: 1; place-items: center; transform: translate(-50%, -50%); border: 3px solid var(--ink); border-radius: 50%; background: var(--hot); box-shadow: 4px 5px 0 var(--ink); color: var(--sun); font-size: 2.1rem; line-height: 1; pointer-events: none; }
+.pair-drop-peg-one { top: 41%; left: 34%; }
+.pair-drop-peg-two { top: 57%; left: 59%; background: var(--violet); }
+.pair-drop-peg-three { top: 68%; left: 22%; width: clamp(36px, 4vw, 50px); background: var(--sun); color: var(--hot); }
+.pair-drop-peg-four { top: 27%; left: 46%; width: clamp(38px, 4.2vw, 54px); background: var(--aqua); color: var(--violet); }
+.pair-drop-peg-extra { width: clamp(23px, 2.6vw, 32px); border-width: 2px; background: var(--sun); box-shadow: 3px 3px 0 var(--ink); color: var(--hot); font-size: 1.25rem; }
+.pair-drop-peg-extra-1 { top: 22%; left: 16%; }
+.pair-drop-peg-extra-2 { top: 19%; left: 41%; background: var(--hot); color: var(--sun); }
+.pair-drop-peg-extra-3 { top: 34%; left: 69%; background: var(--aqua); color: var(--violet); }
+.pair-drop-peg-extra-4 { top: 58%; left: 83%; }
+.pair-drop-peg-extra-5 { top: 70%; left: 39%; background: var(--hot); color: var(--sun); }
+.pair-drop-peg-extra-6 { top: 77%; left: 62%; background: var(--aqua); color: var(--violet); }
+.pair-drop-peg-extra-7 { top: 13%; left: 67%; background: var(--hot); color: var(--sun); }
+.pair-drop-peg-extra-8 { top: 44%; left: 86%; background: var(--aqua); color: var(--violet); }
+.pair-drop-peg-extra-9 { top: 54%; left: 13%; }
+.pair-drop-peg-extra-10 { top: 82%; left: 82%; background: var(--hot); color: var(--sun); }
+.pair-drop-goal { position: absolute; z-index: 4; bottom: 26px; left: 50%; display: flex; width: clamp(58px, 7vw, 76px); aspect-ratio: 1; flex-direction: column; align-items: center; justify-content: center; border: 4px solid var(--ink); border-radius: 50%; background: var(--orange); color: var(--ink); transform: translateX(-50%) rotate(-9deg); animation: pair-met-wiggle 2.2s ease-in-out infinite; pointer-events: none; }
+@keyframes pair-met-wiggle {
+  0%, 100% { transform: translateX(-50%) rotate(-9deg) scale(1); }
+  35% { transform: translateX(-50%) rotate(-3deg) scale(1.025, 0.975); }
+  70% { transform: translateX(-50%) rotate(-13deg) scale(0.985, 1.02); }
+}
+.pair-drop-goal > span { max-width: calc(100% - 6px); font-family: "Teko", Impact, sans-serif; font-size: clamp(1.5rem, 2.55vw, 2rem); font-weight: 700; line-height: 0.8; letter-spacing: -0.055em; white-space: nowrap; transform: scaleX(0.88); }
+.pair-drop-floor { position: absolute; right: 0; bottom: 0; left: 0; height: 13px; background: repeating-linear-gradient(90deg, var(--sun) 0 36px, var(--hot) 36px 72px, var(--aqua) 72px 108px); border-top: 4px solid var(--ink); pointer-events: none; }
+.pair-drop-burst { position: absolute; z-index: 10; bottom: 68%; left: 50%; width: 190px; color: var(--sun); font-size: 3.3rem; letter-spacing: 0.25em; text-align: center; opacity: 0; transform: translateX(-50%) scale(0.4) rotate(-15deg); pointer-events: none; }
+.pair-drop-burst span { color: var(--aqua); }
+.pair-drop-stage[data-phase="paired"] .pair-drop-burst { opacity: 1; transform: translateX(-50%) scale(1.1) rotate(5deg); transition: transform 500ms cubic-bezier(.2, 1.8, .4, 1), opacity 160ms ease; }
+.pair-drop-stage[data-phase="paired"] .pair-drop-goal { transition: translate 540ms cubic-bezier(.2, 1, .3, 1); }
+.pair-drop-stage[data-phase="paired"] .pair-drop-goal,
+.pair-drop-stage[data-phase="gameover"] .pair-drop-goal { animation-play-state: paused; }
+
+.pair-drop-controls { display: flex; min-height: 104px; align-items: center; justify-content: space-between; gap: 22px; padding: 19px 27px; }
+.pair-drop-message { max-width: 530px; margin: 0; font-family: "Teko", Impact, sans-serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 700; line-height: 0.86; letter-spacing: 0.025em; }
+.pair-drop-actions { display: flex; flex: none; align-items: center; gap: 20px; }
+.pair-drop-actions > span { font-size: 0.65rem; font-weight: 800; line-height: 1.6; letter-spacing: 0.07em; text-align: right; }
+.pair-drop-hint-mobile { display: none; }
+.pair-drop-actions button { flex: none; min-width: 142px; padding: 15px 20px 12px; border: 3px solid var(--ink); border-radius: 999px; background: var(--sun); box-shadow: 5px 5px 0 var(--ink); color: var(--ink); font-family: inherit; font-size: 0.91rem; font-weight: 800; transition: transform 180ms ease, box-shadow 180ms ease; }
+.pair-drop-actions button:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 6px 8px 0 var(--ink); }
+.pair-drop-actions button:active:not(:disabled) { transform: translateY(2px); box-shadow: 2px 2px 0 var(--ink); }
+.pair-drop-actions button:focus-visible { outline: 3px solid var(--violet); outline-offset: 4px; }
+.pair-drop-actions button:disabled { opacity: 0.58; }
+
 .gallery-scroll { position: relative; height: 760svh; background: var(--violet); }
 
 .gallery-stage {
@@ -1364,6 +1449,8 @@ html.is-intro-locked .site-header {
   .pair-lab-field { width: min(88vw, 760px); }
   .pair-lab-scroll { display: none; }
   .pair-lab-result-copy { right: 28px; }
+  .pair-drop-peg-extra { display: none; }
+  .pair-drop-actions > span { display: none; }
   .gallery-deck { width: min(58vw, 470px); }
   .gallery-instruction { display: none; }
 }
@@ -1418,6 +1505,33 @@ html.is-intro-locked .site-header {
   .pair-lab-result-copy { right: 18px; bottom: 7%; left: 18px; text-align: center; }
   .pair-lab-result-copy strong { font-size: clamp(3.5rem, 17vw, 5.3rem); text-shadow: 3px 3px 0 var(--hot), 6px 6px 0 var(--ink); }
   .pair-lab-footnote { right: 20px; bottom: 5%; left: 20px; max-width: none; font-size: 0.67rem; line-height: 1.4; text-align: center; }
+  .pair-drop { padding: 82px 18px 95px; }
+  .pair-drop::before { top: -55px; right: -25px; }
+  .pair-drop::after { bottom: -50px; left: -30px; }
+  .pair-drop-header { align-items: start; margin-bottom: 24px; }
+  .pair-drop-eyebrow { font-size: 0.59rem; }
+  .pair-drop h2 { font-size: clamp(4.8rem, 17vw, 7rem); }
+  .pair-drop h2 em { text-shadow: 3px 3px 0 var(--sun), 6px 6px 0 var(--ink); }
+  .pair-drop-intro { max-width: 215px; margin-top: 14px; font-size: 0.83rem; line-height: 1.4; }
+  .pair-drop-score { min-width: 72px; padding: 10px 9px 6px; font-size: 0.55rem; }
+  .pair-drop-score strong { font-size: 2.4rem; }
+  .pair-drop-game { border-width: 3px; border-radius: 19px; box-shadow: 7px 8px 0 var(--ink); }
+  .pair-drop-stage { height: 430px; }
+  .pair-drop-stage-label { top: 20px; left: 16px; font-size: 0.56rem; }
+  .pair-drop-target-label { top: 20px; right: 16px; font-size: 0.56rem; }
+  .pair-drop-peg-one { top: 39%; left: 28%; }
+  .pair-drop-peg-two { top: 55%; left: 57%; }
+  .pair-drop-peg-three { top: 70%; left: 22%; }
+  .pair-drop-peg-four { top: 27%; left: 46%; }
+  .pair-drop-goal { bottom: 26px; width: 58px; }
+  .pair-drop-burst { width: 140px; font-size: 2.5rem; }
+  .pair-drop-controls { min-height: 134px; flex-wrap: wrap; gap: 12px; padding: 18px; }
+  .pair-drop-message { width: 100%; font-size: 1.9rem; }
+  .pair-drop-actions { width: 100%; justify-content: space-between; }
+  .pair-drop-actions > span { font-size: 0.56rem; text-align: left; }
+  .pair-drop-actions .pair-drop-hint-desktop { display: none; }
+  .pair-drop-actions .pair-drop-hint-mobile { display: block; }
+  .pair-drop-actions button { min-width: 123px; padding: 12px 13px 10px; font-size: 0.78rem; }
   .gallery-heading { top: 92px; }
   .gallery-heading h2 { font-size: 4rem; text-shadow: 4px 4px 0 var(--hot), 7px 7px 0 var(--ink); }
   .gallery-deck { width: 72vw; margin-top: 72px; }

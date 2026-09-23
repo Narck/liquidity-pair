@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CustomPointer from "./CustomPointer";
 import NavEyes from "./NavEyes";
 import HeroRipple from "./HeroRipple";
+import PairDropGame from "./PairDropGame";
 
 const CONTRACT = "8CECyxU5dTBwvzYXDcvzkgQ3qV8nsxXDrST396isn4Tu";
 const DEX_URL = "https://dexscreener.com/solana/xZJTKthDmRx2H7fHp5FTeuv9V8vVrpYZkToa5sCmAXV";
@@ -975,6 +976,8 @@ export default function Home() {
           <div className="pair-lab-scroll lab-copy-before" aria-hidden="true">KEEP THEM PAIRED <i>↓</i></div>
         </div>
       </section>
+
+      <PairDropGame />
 
       <section id="gallery" ref={gallerySection} className="gallery-scroll">
         <div className="gallery-stage">
