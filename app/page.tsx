@@ -7,6 +7,7 @@ import CustomPointer from "./CustomPointer";
 import NavEyes from "./NavEyes";
 import HeroRipple from "./HeroRipple";
 import PairDropGame from "./PairDropGame";
+import GravityDuo from "./GravityDuo";
 
 const CONTRACT = "8CECyxU5dTBwvzYXDcvzkgQ3qV8nsxXDrST396isn4Tu";
 const DEX_URL = "https://dexscreener.com/solana/xZJTKthDmRx2H7fHp5FTeuv9V8vVrpYZkToa5sCmAXV";
@@ -716,36 +717,6 @@ export default function Home() {
           ".finale-actions",
         ]);
 
-        const gravityWord = document.querySelector<HTMLElement>(".gravity-word");
-        const gravityOrb = document.querySelector<HTMLElement>(".gravity-orb");
-        const aboutSection = document.querySelector<HTMLElement>(".about");
-        if (gravityWord && gravityOrb && aboutSection) {
-          const gravityFall = gsap.timeline({ paused: true })
-            .fromTo(gravityOrb,
-              { autoAlpha: 0, scale: 0.35, y: -10, rotate: -18 },
-              { autoAlpha: 1, scale: 1, y: 0, rotate: 0, duration: 0.18, ease: "back.out(2)" },
-            )
-            .to(gravityOrb, {
-              y: () => Math.max(
-                gravityOrb.offsetHeight + 32,
-                aboutSection.getBoundingClientRect().bottom
-                  - gravityWord.getBoundingClientRect().bottom
-                  + gravityOrb.offsetHeight + 24,
-              ),
-              rotate: 165,
-              scale: 0.88,
-              duration: 1.05,
-              ease: "power3.in",
-            }, "+=0.02");
-
-          ScrollTrigger.create({
-            trigger: gravityWord,
-            start: "top 72%",
-            onEnter: () => gravityFall.invalidate().restart(),
-            onLeaveBack: () => gravityFall.pause(0),
-          });
-        }
-
         gsap.fromTo(".finale-sun",
           { "--sun-entrance": "-110px" },
           {
@@ -909,6 +880,7 @@ export default function Home() {
       </section>
 
       <section id="about" className="about">
+        <GravityDuo />
         <div className="ticker" aria-hidden="true">
           <div>
             <span>LIQUIDITY PAIR ★ </span><span>NATURALLY PAIRED ★ </span><span>LP × MET ★ </span>
@@ -924,7 +896,7 @@ export default function Home() {
             <p className="eyebrow">A VERY SERIOUS CRYPTO PROJECT*</p>
             <h2>METEORA MADE THE POOLS.<br />NATURE MADE THE PAIR.<br /><em>WE JUST <span>DEPLOYED&nbsp;IT.</span></em></h2>
             <div className="about-note">
-              <p>One of the first coins to hit Ember. Paired directly with $MET. Powered by the only liquidity pair that already had <span className="gravity-word">gravity.<svg className="gravity-underline" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9 C16 8 25 4 38 7 C50 10 61 4 74 5 C89 7 101 3 118 6" /></svg><span className="gravity-orb" aria-hidden="true" /></span></p>
+              <p>One of the first coins to hit Ember. Paired directly with $MET. Powered by the only liquidity pair that already had <span className="gravity-word">gravity.<svg className="gravity-underline" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9 C16 8 25 4 38 7 C50 10 61 4 74 5 C89 7 101 3 118 6" /></svg></span></p>
               <small>*it was never that serious</small>
             </div>
           </div>
