@@ -756,6 +756,36 @@ export default function Home() {
           },
         );
       }
+
+      const siteHeader = root.current?.querySelector<HTMLElement>(".site-header");
+      if (siteHeader) {
+        let lastDirectionPosition = window.scrollY;
+        const setHeaderHidden = (hidden: boolean) => {
+          siteHeader.classList.toggle("is-finale-hidden", hidden);
+        };
+
+        ScrollTrigger.create({
+          trigger: ".finale",
+          start: "top 85%",
+          end: "bottom top",
+          onEnter: () => {
+            lastDirectionPosition = window.scrollY;
+            setHeaderHidden(true);
+          },
+          onUpdate: (self) => {
+            const scrollPosition = window.scrollY;
+            if (Math.abs(scrollPosition - lastDirectionPosition) < 6) return;
+            lastDirectionPosition = scrollPosition;
+            setHeaderHidden(self.direction > 0);
+          },
+          onLeaveBack: () => {
+            lastDirectionPosition = window.scrollY;
+            setHeaderHidden(false);
+          },
+        });
+
+        cleanups.push(() => setHeaderHidden(false));
+      }
     }, root);
 
     return () => {
